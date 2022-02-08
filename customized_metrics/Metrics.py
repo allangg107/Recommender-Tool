@@ -26,8 +26,8 @@ class CS01:
          robustAccImprove)
 
     result = {
-      "score_name": "CS01_score",
-      "score": CS01_score,
+      "score_name": "CS01_score", # required from users
+      "score": CS01_score,        # required from users
       "details" : {
         "timeTradeOff": timeTradeOff,
         "naturalAccTradeOff": naturalAccTradeOff,
