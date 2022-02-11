@@ -1,10 +1,13 @@
 from pulp import *
+from ConstraintHandlerInterface import ConstraintSolverInterface
 
-class PulPConstraintBuilder:
+class PulP(ConstraintSolverInterface):
   def __init__(self, constraintObjectList, defenderDict, defenderNames):
-    self.constraintObjectList = constraintObjectList
-    self.defenderDict = defenderDict
-    self.defenderNames = defenderNames
+    ConstraintSolverInterface.__init__(self,
+      constraintObjectList = constraintObjectList,
+      defenderDict = defenderDict,
+      defenderNames = defenderNames
+    )
   
   def _buildAContraint(self, constraintObject, expression = []):
     op = constraintObject['constraint']
@@ -29,7 +32,7 @@ class PulPConstraintBuilder:
     elif op == '==':
       return lpSum(expression) == value
   
-  def build(self):
+  def buildConstraint(self):
     self.defenderVars = LpVariable.dicts("Defenders", self.defenderNames, lowBound=0, upBound=1, cat='Integer')
     totalScore = None
     for constraintObject in self.constraintObjectList:

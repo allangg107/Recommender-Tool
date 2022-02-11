@@ -1,7 +1,7 @@
 from Constants import BASELINE_PERFORMANCE, THREAT_MODELS, STATUS_DICT
-from ConstraintHandler import PulPConstraintBuilder
 import json
 from collections import defaultdict
+from Loader import SolverClassLoader
 
 # TODO: we probably need 'recommendation_score' as per each testing parameter
 
@@ -105,12 +105,13 @@ class InputDataHandler:
   def _solveConstraintProblem(self, defenderDict):
     recommendations = []
     constraintObjectList=self.kwargs['pulp_settings']['constraints']
-    pulPConstraintBuilder = PulPConstraintBuilder(
-      defenderNames = list(defenderDict.keys()),
-      defenderDict = defenderDict,
-      constraintObjectList = constraintObjectList
-    )
-    totalScore = pulPConstraintBuilder.build()
+    solverClassLoader = SolverClassLoader(path=self.kwargs['solver']['path'], name=self.kwargs['solver']['name'],kwargs={
+      "defenderNames": list(defenderDict.keys()),
+      "defenderDict": defenderDict,
+      "constraintObjectList": constraintObjectList
+    })
+    constraintSolver = solverClassLoader.loadSolver()
+    totalScore = constraintSolver.buildConstraint()
     statusCode = totalScore.solve()
     for v in totalScore.variables():
       if v.varValue > 0:
