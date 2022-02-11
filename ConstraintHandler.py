@@ -1,11 +1,10 @@
 from pulp import *
 
 class PulPConstraintBuilder:
-  def __init__(self, constraintObjectList, defenderDict, defenderNames, topK):
+  def __init__(self, constraintObjectList, defenderDict, defenderNames):
     self.constraintObjectList = constraintObjectList
     self.defenderDict = defenderDict
     self.defenderNames = defenderNames
-    self.topK = topK
   
   def _buildAContraint(self, constraintObject, expression = []):
     op = constraintObject['constraint']
@@ -42,5 +41,5 @@ class PulPConstraintBuilder:
         totalScore += self._buildAContraint(
           constraintObject = constraintObject
         )
-    totalScore += lpSum([self.defenderVars[i] for i in self.defenderVars]) == self.topK
+    totalScore += lpSum([self.defenderVars[i] for i in self.defenderVars]) == 1 # top 1 result
     return totalScore

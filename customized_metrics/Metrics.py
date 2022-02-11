@@ -26,6 +26,7 @@ class CS01:
          robustAccImprove)
 
     result = {
+      "denoiser_name": scoreDictionary['nameOfDefender'],
       "score_name": "CS01_score", # required from users
       "score": CS01_score,        # required from users
       "details" : {
@@ -35,6 +36,7 @@ class CS01:
       }
     }
     if self.showDetails:
+      print('\n')
       print(result)
 
     return result

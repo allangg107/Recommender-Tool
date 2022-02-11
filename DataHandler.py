@@ -89,6 +89,7 @@ class InputDataHandler:
     for defenderObjectIdx, defenderObject in enumerate(defenderListForCurrentAttack):
       defenderDict[defenderObject['nameOfDefender']] = defenderObject
       scoreDictionary['defender_performance'] = defenderObject['defender_performance']
+      scoreDictionary['nameOfDefender'] = defenderObject['nameOfDefender']
       if self.scoreCalculatorFunc is not None:
         result = self.scoreCalculatorFunc(scoreDictionary = scoreDictionary)
         scoreName = result['score_name']
@@ -107,9 +108,8 @@ class InputDataHandler:
     pulPConstraintBuilder = PulPConstraintBuilder(
       defenderNames = list(defenderDict.keys()),
       defenderDict = defenderDict,
-      constraintObjectList = constraintObjectList,
-      topK = self.kwargs['pulp_settings']['top_K_rec_per_parameter']
-    ) # TODO: create constants for each string here
+      constraintObjectList = constraintObjectList
+    )
     totalScore = pulPConstraintBuilder.build()
     statusCode = totalScore.solve()
     for v in totalScore.variables():
