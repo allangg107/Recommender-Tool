@@ -1,5 +1,6 @@
 from DataHandler import InputDataHandler
 from Constants import DEFAULT_OUTPUT_LOCATION
+from Loader import CustomizedMetricScoreClassLoader
 import json
 
 class Driver:
@@ -11,20 +12,22 @@ class Driver:
     outputPath = DEFAULT_OUTPUT_LOCATION
     with open(self.settingPath, 'r') as fp:
         setting = json.load(fp)
-    # TODO:dynamically import formula
-    scoreCalculatorParam = setting['scoreCalculatorParam']
-    from customized_metrics.Metrics import CS01
-    scoreCalculator = CS01(
-      showDetails = scoreCalculatorParam['showDetails'],
-      alpha= scoreCalculatorParam['alpha'], 
-      beta=scoreCalculatorParam['beta'],   
-      gamma=scoreCalculatorParam['gamma']   
-    )
+    
+    # load customized metric score calculators
+    customizedScoresDict = {}
+    for scoreCalculatorParam in setting['customized_metric_score']:
+      customizedMetricScoreClassLoader = CustomizedMetricScoreClassLoader(
+        path = scoreCalculatorParam['path'],
+        name = scoreCalculatorParam['name'],
+        kwargs = scoreCalculatorParam['scoreCalculatorParam']
+      )
+      scoreCalculator = customizedMetricScoreClassLoader.loadScore()
+      customizedScoresDict[scoreCalculatorParam['name']] = scoreCalculator.getScore
 
     # handle data
     recommendation_result = InputDataHandler(
       kwargs = setting,
-      scoreCalculatorFunc = scoreCalculator.getScore
+      scoreCalculatorFuncDict = customizedScoresDict
     ).handle(jsonFilePath = setting['input_data_path'])
 
     # output

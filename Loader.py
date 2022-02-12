@@ -1,11 +1,11 @@
-from ConstraintHandlerInterface import ConstraintSolverInterface
+from Interfaces import ConstraintSolverInterface, CustomizedMetricScoreInterface
 
 class DynamicClassLoader:
   def load(self, classPath : str = None,className : str = None):
     Kclass = getattr(__import__(classPath, fromlist=[className]), className)
     return Kclass
 
-class SolverClassLoader:
+class ConstraintSolverClassLoader:
   def __init__(self, path : str = None, name : str = None, kwargs = {}):
     self.path = path
     self.name = name
@@ -23,3 +23,18 @@ class SolverClassLoader:
       defenderNames = self.kwargs['defenderNames']
     )
     return solverObject
+
+class CustomizedMetricScoreClassLoader:
+  def __init__(self, path : str = None, name : str = None, kwargs = {}):
+    self.path = path
+    self.name = name
+    self.kwargs = kwargs
+  
+  def loadScore(self):
+    scoreCalculatorClass = DynamicClassLoader().load(
+      classPath = self.path,
+      className=self.name
+    )
+    assert(issubclass(scoreCalculatorClass, CustomizedMetricScoreInterface))
+    scoreCalculatorObject = scoreCalculatorClass(kwargs = self.kwargs)
+    return scoreCalculatorObject

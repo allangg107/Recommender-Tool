@@ -1,13 +1,13 @@
 from Constants import BASELINE_PERFORMANCE, THREAT_MODELS, STATUS_DICT
 import json
 from collections import defaultdict
-from Loader import SolverClassLoader
+from Loader import ConstraintSolverClassLoader
 
 # TODO: we probably need 'recommendation_score' as per each testing parameter
 
 class InputDataHandler:
-  def __init__(self, scoreCalculatorFunc = None, verbose = False, kwargs = {}):
-    self.scoreCalculatorFunc = scoreCalculatorFunc
+  def __init__(self, scoreCalculatorFuncDict = {}, verbose = False, kwargs = {}):
+    self.scoreCalculatorFuncDict = scoreCalculatorFuncDict
     self.verbose = verbose
     self.kwargs = kwargs
 
@@ -90,22 +90,23 @@ class InputDataHandler:
       defenderDict[defenderObject['nameOfDefender']] = defenderObject
       scoreDictionary['defender_performance'] = defenderObject['defender_performance']
       scoreDictionary['nameOfDefender'] = defenderObject['nameOfDefender']
-      if self.scoreCalculatorFunc is not None:
-        result = self.scoreCalculatorFunc(scoreDictionary = scoreDictionary)
-        scoreName = result['score_name']
-        score = result['score']
-        defenderDict[defenderObject['nameOfDefender']]['defender_performance'][scoreName] = score
+      for scoreCalculatorFuncName, scoreCalculatorFunc in self.scoreCalculatorFuncDict.items():
+        if scoreCalculatorFunc is not None:
+          result = scoreCalculatorFunc(scoreDictionary = scoreDictionary)
+          scoreName = scoreCalculatorFuncName
+          score = result['score']
+          defenderDict[defenderObject['nameOfDefender']]['defender_performance'][scoreName] = score
 
-        if self.verbose:
-          print("\n[InputDataHandler] datasetName: {}, modelName: {}, threatModel: {}, attackerName: {}, defender's name: {}, cs01_score: {}".format(
-                  datasetName, modelName, threatModel, attackerName, defenderObject['nameOfDefender'], score
-          ))
+          if self.verbose:
+            print("\n[InputDataHandler] datasetName: {}, modelName: {}, threatModel: {}, attackerName: {}, defender's name: {}, cs01_score: {}".format(
+                    datasetName, modelName, threatModel, attackerName, defenderObject['nameOfDefender'], score
+            ))
     return defenderDict
 
   def _solveConstraintProblem(self, defenderDict):
     recommendations = []
-    constraintObjectList=self.kwargs['pulp_settings']['constraints']
-    solverClassLoader = SolverClassLoader(path=self.kwargs['solver']['path'], name=self.kwargs['solver']['name'],kwargs={
+    constraintObjectList = self.kwargs['solver']['constraints']
+    solverClassLoader = ConstraintSolverClassLoader(path=self.kwargs['solver']['path'], name=self.kwargs['solver']['name'],kwargs={
       "defenderNames": list(defenderDict.keys()),
       "defenderDict": defenderDict,
       "constraintObjectList": constraintObjectList

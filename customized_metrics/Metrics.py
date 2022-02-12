@@ -1,11 +1,13 @@
 # Customized score 01
-class CS01:
-  def __init__(self, alpha = 1, beta = 1, gamma = 1, attackerName = "PGD", showDetails = False):
-    self.attackerName = attackerName
-    self.alpha = alpha  # time tradeoff coefficient
-    self.beta = beta    # natural accuracy tradeoff coefficient
-    self.gamma = gamma  # robust accuracy coefficient
-    self.showDetails = showDetails
+from Interfaces import CustomizedMetricScoreInterface
+class CS01(CustomizedMetricScoreInterface):
+  def __init__(self, kwargs):
+    CustomizedMetricScoreInterface.__init__(self, kwargs=kwargs)
+    # alpha = 1, beta = 1, gamma = 1, attackerName = "PGD", showDetails = False
+    self.alpha = self.kwargs['alpha']  # time tradeoff coefficient
+    self.beta = self.kwargs['beta']    # natural accuracy tradeoff coefficient
+    self.gamma = self.kwargs['gamma']  # robust accuracy coefficient
+    self.showDetails = self.kwargs['showDetails']
 
   def getScore(self, scoreDictionary):
     initialTime = scoreDictionary['baseline_performance']['inference_elapsed_time_per_1000_in_s']
@@ -27,7 +29,7 @@ class CS01:
 
     result = {
       "denoiser_name": scoreDictionary['nameOfDefender'],
-      "score_name": "CS01_score", # required from users
+      # "score_name": "CS01",       # required from users
       "score": CS01_score,        # required from users
       "details" : {
         "timeTradeOff": timeTradeOff,

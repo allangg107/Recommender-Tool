@@ -1,5 +1,5 @@
 from pulp import *
-from ConstraintHandlerInterface import ConstraintSolverInterface
+from Interfaces import ConstraintSolverInterface
 
 class PulP(ConstraintSolverInterface):
   def __init__(self, constraintObjectList, defenderDict, defenderNames):
