@@ -3,12 +3,30 @@ from Interfaces import ConstraintSolverInterface
 
 class PulP(ConstraintSolverInterface):
   def __init__(self, constraintObjectList, defenderDict, defenderNames):
+    self.numberOfMinConditionsLimit = 0
+    self.numberOfMaxConditionsLimit = 0
+    self.numberOfCurrentMinConditions = 0
+    self.numberOfCurrentMaxConditions = 0
     ConstraintSolverInterface.__init__(self,
       constraintObjectList = constraintObjectList,
       defenderDict = defenderDict,
       defenderNames = defenderNames
     )
   
+  def getStatusCode(self) -> int:
+    return self.statusCode
+
+  def getVariables(self):
+    return (self.constraintObject).variables()
+
+  def solve(self):
+    if self.constraintObject is None:
+      raise Exception("PulP's constraint object is None")
+    if (self.numberOfMaxConditionsLimit != self.numberOfCurrentMaxConditions) or (self.numberOfMinConditionsLimit != self.numberOfCurrentMinConditions):
+      raise Exception("Need to add min/max constraint")
+
+    return (self.constraintObject).solve()
+
   def _buildAContraint(self, constraintObject, expression = []):
     op = constraintObject['constraint']
     value, expression = None, None
@@ -20,10 +38,21 @@ class PulP(ConstraintSolverInterface):
       value = float(constraintObject['constraint_value'])
     
     if op == 'LpMaximize':
+      self.numberOfMaxConditionsLimit = 1
       return LpProblem(constraintObject['problem_statement'], LpMaximize)
     elif op == 'LpMinimize':
+      self.numberOfMinConditionsLimit = 1
       return LpProblem(constraintObject['problem_statement'], LpMinimize)
-    elif op == 'max':
+    
+    elif op == 'max' or op == 'min':
+      if op == 'max':
+        if self.numberOfMaxConditionsLimit == self.numberOfCurrentMaxConditions:
+          raise Exception("Only 1 Max constraint")
+        self.numberOfCurrentMaxConditions += 1
+      elif op == 'min':
+        if self.numberOfMinConditionsLimit == self.numberOfCurrentMinConditions:
+          raise Exception("Only 1 Min constraint")
+        self.numberOfCurrentMinConditions += 1
       return lpSum(expression)
     elif op == '>=':
       return lpSum(expression) >= value
@@ -45,4 +74,5 @@ class PulP(ConstraintSolverInterface):
           constraintObject = constraintObject
         )
     totalScore += lpSum([self.defenderVars[i] for i in self.defenderVars]) == 1 # top 1 result
-    return totalScore
+    self.constraintObject = totalScore
+    # return totalScore

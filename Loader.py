@@ -6,10 +6,20 @@ class DynamicClassLoader:
     return Kclass
 
 class ConstraintSolverClassLoader:
-  def __init__(self, path : str = None, name : str = None, kwargs = {}):
+  def __init__(self, path : str, name : str, kwargs : dict):
     self.path = path
     self.name = name
     self.kwargs = kwargs
+    self._checkParams()
+
+  def _checkParams(self):
+    if self.path is None or self.name is None:
+      raise Exception("either path or name is None")
+    if self.path == "" or self.name == "":
+      raise Exception("path and name must not be empty strings")
+    kwargsContainsRequiredKey = ("constraintObjectList" in self.kwargs and "defenderDict" in self.kwargs and "defenderNames" in self.kwargs)
+    if not kwargsContainsRequiredKey:
+      raise Exception("Missing constraintObjectList, defenderDict or defenderNames required keys in kwargs")
 
   def loadSolver(self):
     solverClass = DynamicClassLoader().load(

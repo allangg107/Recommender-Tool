@@ -3,15 +3,13 @@ import json
 from collections import defaultdict
 from Loader import ConstraintSolverClassLoader
 
-# TODO: we probably need 'recommendation_score' as per each testing parameter
-
 class InputDataHandler:
-  def __init__(self, scoreCalculatorFuncDict = {}, verbose = False, kwargs = {}):
+  def __init__(self, scoreCalculatorFuncDict = {}, verbose = False, settingKwargs = {}):
     self.scoreCalculatorFuncDict = scoreCalculatorFuncDict
     self.verbose = verbose
-    self.kwargs = kwargs
+    self.settingKwargs = settingKwargs
 
-  def handle(self, jsonFilePath):
+  def handle(self, jsonFilePath:str):
     recommendation_result = defaultdict()
     inputData = {}
     with open(jsonFilePath, 'r') as fp:
@@ -90,31 +88,34 @@ class InputDataHandler:
       defenderDict[defenderObject['nameOfDefender']] = defenderObject
       scoreDictionary['defender_performance'] = defenderObject['defender_performance']
       scoreDictionary['nameOfDefender'] = defenderObject['nameOfDefender']
-      for scoreCalculatorFuncName, scoreCalculatorFunc in self.scoreCalculatorFuncDict.items():
-        if scoreCalculatorFunc is not None:
-          result = scoreCalculatorFunc(scoreDictionary = scoreDictionary)
-          scoreName = scoreCalculatorFuncName
-          score = result['score']
-          defenderDict[defenderObject['nameOfDefender']]['defender_performance'][scoreName] = score
+      if self.scoreCalculatorFuncDict is not None and self.scoreCalculatorFuncDict != {}:
+        for scoreCalculatorFuncName, scoreCalculatorFunc in self.scoreCalculatorFuncDict.items():
+          if scoreCalculatorFunc is not None:
+            result = scoreCalculatorFunc(scoreDictionary = scoreDictionary)
+            scoreName = scoreCalculatorFuncName
+            score = result['score']
+            defenderDict[defenderObject['nameOfDefender']]['defender_performance'][scoreName] = score
 
-          if self.verbose:
-            print("\n[InputDataHandler] datasetName: {}, modelName: {}, threatModel: {}, attackerName: {}, defender's name: {}, cs01_score: {}".format(
-                    datasetName, modelName, threatModel, attackerName, defenderObject['nameOfDefender'], score
-            ))
+            if self.verbose:
+              print("\n[InputDataHandler] datasetName: {}, modelName: {}, threatModel: {}, attackerName: {}, defender's name: {}, cs01_score: {}".format(
+                      datasetName, modelName, threatModel, attackerName, defenderObject['nameOfDefender'], score
+              ))
     return defenderDict
 
   def _solveConstraintProblem(self, defenderDict):
     recommendations = []
-    constraintObjectList = self.kwargs['solver']['constraints']
-    solverClassLoader = ConstraintSolverClassLoader(path=self.kwargs['solver']['path'], name=self.kwargs['solver']['name'],kwargs={
-      "defenderNames": list(defenderDict.keys()),
-      "defenderDict": defenderDict,
-      "constraintObjectList": constraintObjectList
-    })
-    constraintSolver = solverClassLoader.loadSolver()
-    totalScore = constraintSolver.buildConstraint()
-    statusCode = totalScore.solve()
-    for v in totalScore.variables():
-      if v.varValue > 0:
-        recommendations.append(v.name)
+    statusCode = 0
+    if self.settingKwargs is not None and self.settingKwargs != {}:
+      constraintObjectList = self.settingKwargs['solver']['constraints']
+      solverClassLoader = ConstraintSolverClassLoader(path=self.settingKwargs['solver']['path'], name=self.settingKwargs['solver']['name'],kwargs={
+        "defenderNames": list(defenderDict.keys()),
+        "defenderDict": defenderDict,
+        "constraintObjectList": constraintObjectList
+      })
+      constraintSolver = solverClassLoader.loadSolver()
+      constraintSolver.buildConstraint()
+      statusCode = constraintSolver.solve()
+      for v in constraintSolver.getVariables():
+        if v.varValue > 0:
+          recommendations.append(v.name)
     return recommendations, STATUS_DICT[statusCode]

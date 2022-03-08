@@ -11,7 +11,7 @@ class CS01(CustomizedMetricScoreInterface):
 
   def getScore(self, scoreDictionary):
     initialTime = scoreDictionary['baseline_performance']['inference_elapsed_time_per_1000_in_s']
-    totalTime = scoreDictionary['defender_performance']['inference_elapsed_time_per_1000_in_s'] + initialTime
+    addedTime = scoreDictionary['defender_performance']['inference_elapsed_time_per_1000_in_s']
 
     naturalAccuracyWithoutDefense = scoreDictionary['baseline_performance']['natural_accuracy']
     robustAccuracyWithoutDefense = scoreDictionary['attacker_performance']['robust_accuracy']
@@ -19,17 +19,16 @@ class CS01(CustomizedMetricScoreInterface):
     naturalAccuracyWithDefense = scoreDictionary['defender_performance']['natural_accuracy']
     robustAccuracyWithDefense = scoreDictionary['defender_performance']['robust_accuracy']
 
-    timeTradeOff = self.alpha * ((initialTime - totalTime) / initialTime)
+    timeTradeOff = self.alpha * ((addedTime) / initialTime)
     naturalAccTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
     robustAccImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
 
-    CS01_score = ( timeTradeOff + \
+    CS01_score = ( -timeTradeOff + \
        naturalAccTradeOff + \
          robustAccImprove)
 
     result = {
       "denoiser_name": scoreDictionary['nameOfDefender'],
-      # "score_name": "CS01",       # required from users
       "score": CS01_score,        # required from users
       "details" : {
         "timeTradeOff": timeTradeOff,

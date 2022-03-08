@@ -3,3 +3,4 @@
 __pycache__
 outputs
 dummyInputs
+tests/integration_outputs/*.json
