@@ -1,5 +1,9 @@
 import tempfile
 
+"""
+This component is responsible for creating and deleting temporary files, which are mainly
+used in testing.
+"""
 class CreateTemp:
   def __init__(self, tempPath = None, suffix = None):
     self.tempFileName = None
@@ -8,6 +12,12 @@ class CreateTemp:
     self.tempPath = tempPath
     self.tempFileContent = None
 
+  """
+  This function creates state temporary file
+  @param contentToWrite user content, which can be string or dictionary, 
+          would be written into the state temp. file
+  @return None
+  """
   def createTempFile(self, contentToWrite):
     if contentToWrite is None:
       raise Exception("contentToWrite is None")
@@ -28,8 +38,12 @@ class CreateTemp:
     
     self.tempFileName = (self.tempFileFp).name
     return None
-    
-
+  
+  """
+  This function cleans up its state temporary file
+  @param None
+  @return None
+  """
   def closeTempFile(self):
     if self.tempFileFp is not None:
       (self.tempFileFp).close()

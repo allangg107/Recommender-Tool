@@ -1,6 +1,9 @@
 from pulp import *
 from Interfaces import ConstraintSolverInterface
 
+"""
+This component build and solve the problem based on a set of constraints by utilizing PulP constraint solver
+"""
 class PulP(ConstraintSolverInterface):
   def __init__(self, constraintObjectList, defenderDict, defenderNames):
     self.numberOfMinConditionsLimit = 0
@@ -19,6 +22,11 @@ class PulP(ConstraintSolverInterface):
   def getVariables(self):
     return (self.constraintObject).variables()
 
+  """
+  Build and solve constrained problem
+  @param None
+  @return solution of the given problem
+  """
   def solve(self):
     if self.constraintObject is None:
       raise Exception("PulP's constraint object is None")
@@ -27,6 +35,12 @@ class PulP(ConstraintSolverInterface):
 
     return (self.constraintObject).solve()
 
+  """
+  Build a single constraint
+  @param constraintObject current constraint object
+  @param expression mathematical expression
+  @return constraint object
+  """
   def _buildAContraint(self, constraintObject, expression = []):
     op = constraintObject['constraint']
     value, expression = None, None
@@ -61,6 +75,11 @@ class PulP(ConstraintSolverInterface):
     elif op == '==':
       return lpSum(expression) == value
   
+  """
+  Build a set of constraint and store it in state variable 'constraintObject'
+  @param None
+  @return None
+  """
   def buildConstraint(self):
     self.defenderVars = LpVariable.dicts("Defenders", self.defenderNames, lowBound=0, upBound=1, cat='Integer')
     totalScore = None

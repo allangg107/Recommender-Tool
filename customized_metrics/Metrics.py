@@ -3,12 +3,16 @@ from Interfaces import CustomizedMetricScoreInterface
 class CS01(CustomizedMetricScoreInterface):
   def __init__(self, kwargs):
     CustomizedMetricScoreInterface.__init__(self, kwargs=kwargs)
-    # alpha = 1, beta = 1, gamma = 1, attackerName = "PGD", showDetails = False
     self.alpha = self.kwargs['alpha']  # time tradeoff coefficient
     self.beta = self.kwargs['beta']    # natural accuracy tradeoff coefficient
     self.gamma = self.kwargs['gamma']  # robust accuracy coefficient
     self.showDetails = self.kwargs['showDetails']
 
+  """
+  This public method returns the score of the given user-defined metric
+  @param scoreDictionary data passed from the user's input data
+  @return a dictionary containing the score
+  """
   def getScore(self, scoreDictionary):
     initialTime = scoreDictionary['baseline_performance']['inference_elapsed_time_per_1000_in_s']
     addedTime = scoreDictionary['defender_performance']['inference_elapsed_time_per_1000_in_s']
