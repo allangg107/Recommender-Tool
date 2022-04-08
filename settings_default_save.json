@@ -1,0 +1,25 @@
+{
+  "input_data_path": "",
+  "customized_metric_score": [
+    {
+      "name": "",
+      "path": "",
+      "scoreCalculatorParam": {
+        "showDetails": true,
+        "": ""
+      }
+    }
+  ],
+  "solver": {
+    "name": "",
+    "path": "",
+    "constraints": [
+      {},
+      {},
+      {}
+    ]
+  },
+  "output": {
+    "outputFilePath": ""
+  }
+}

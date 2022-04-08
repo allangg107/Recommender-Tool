@@ -1,0 +1,49 @@
+{
+  "context": {
+    "GPU": "dummyGPU",
+    "image_size": [
+      224,
+      224,
+      3
+    ]
+  },
+  "data": {
+    "cifar100": {
+      "EfficientNet": {
+        "EfficientNet": {
+          "baseline_performance": {
+            "np": "67",
+            "na": "86"
+          }
+        },
+        "grey_box": {
+          "pgd": {
+            "type_of_attack": "evasion",
+            "attackParams": {
+              "randominnot": "3",
+              "maxiter": "150"
+            },
+            "attacker_performance": {
+              "rp": "2.51",
+              "ra": "1.92"
+            },
+            "defenders": [
+              {
+                "nameOfDefender": "emulated_ae",
+                "type": "preprocessor",
+                "defense_params": {
+                  "method": "2",
+                  "size": "120"
+                },
+                "defender_performance": {
+                  "np": "98",
+                  "na": "87"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
