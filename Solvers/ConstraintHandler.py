@@ -15,7 +15,12 @@ class PulP(ConstraintSolverInterface):
       defenderDict = defenderDict,
       defenderNames = defenderNames
     )
+    self._checkParams()
   
+  def _checkParams(self):
+    if self.constraintObjectList is None or self.constraintObjectList == []:
+      raise Exception("constraintObjectList is either None of []")
+
   def getStatusCode(self) -> int:
     return self.statusCode
 

@@ -209,7 +209,7 @@ def test_PUlP_solver_minimum_CS02_and_CS01_inequality():
       recommendations.append(v.name)
   assert(trueRecommendations == recommendations)
 
-def test_PUlP_solver_minimum_CS02_and_CS01_inequality():
+def test_PUlP_solver_minimum_CS02_and_CS01_inequality_no_constraint_value():
   import pytest
   with pytest.raises(Exception):
     constraintObjectList = [
@@ -251,6 +251,21 @@ def test_PUlP_solver_no_min_max():
         "metric_name": "CS02"
       }
     ]
+    trueRecommendations = ["Defenders_random_defender_name_01"]
+    recommendations = []
+    solverClassLoader = ConstraintSolverClassLoader(path="Solvers.ConstraintHandler", name="PulP",kwargs={
+        "defenderNames": list(DEFENDER_DICT.keys()),
+        "defenderDict": DEFENDER_DICT,
+        "constraintObjectList": constraintObjectList
+    })
+    constraintSolver = solverClassLoader.loadSolver()
+    totalScore = constraintSolver.buildConstraint()
+    statusCode = totalScore.solve()
+
+def test_PUlP_solver_empty_constraintObjectList():
+  import pytest
+  with pytest.raises(Exception):
+    constraintObjectList = []
     trueRecommendations = ["Defenders_random_defender_name_01"]
     recommendations = []
     solverClassLoader = ConstraintSolverClassLoader(path="Solvers.ConstraintHandler", name="PulP",kwargs={
