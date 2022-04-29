@@ -106,10 +106,9 @@ class MainWindow(Screen):
         global _Settings_JSON_File_Path
         if len(_Settings_JSON_File_Path) != 0:
             driver = Driver(settingPath=_Settings_JSON_File_Path)
-            # driver = Driver(settingPath="gen_setting.json")
             driver.drive()
         else:
-            driver = Driver(settingPath="gen_setting.json")
+            driver = Driver(settingPath="gen_setting02.json")
             driver.drive()
 
 
@@ -600,7 +599,7 @@ class AllSettingFieldsContainer(BoxLayout):
         output_dict = {}
         if len(self.ids.default_setting_fields_container.ids.default_setting_fields_grid.ids.output_file_path_input.text) != 0:
             output_dict[
-                "outputFilePath"] = self.ids.default_setting_fields_container.ids.default_setting_fields_grid.ids.output_file_path_input.text
+                "output_file_path"] = self.ids.default_setting_fields_container.ids.default_setting_fields_grid.ids.output_file_path_input.text
         else:
             self.ids.default_setting_fields_container.ids.default_setting_fields_grid.ids.output_file_path_input.hint_text = "REQUIRED FIELD"
             _Missing_Field = True
