@@ -4,6 +4,7 @@ WindowManager:
     MainWindow:
     DataWindow:
     SettingsWindow:
+        id: settings_window
 
 
 <MainWindow>:
@@ -81,12 +82,14 @@ WindowManager:
         size_hint: .2, 1
         on_release:
             root.parent.parent.generate_ml_model_data_json()
-            app.root.current = "main_window"
+            if root.parent.parent.get_missing_field_status() == False: \
+            app.root.current = "main_window"; \
             app.root.transition.direction = "left"
 
     Button:
         text: "Load"
         size_hint: .2, 1
+        on_release: root.parent.parent.show_load()
 
     Label:
         text: "ML Model Data"
@@ -103,17 +106,6 @@ WindowManager:
     orientation: 'vertical'
     size_hint: 1, None
     height: self.minimum_height
-
-    GridLayout:
-        cols: 2
-        size_hint: 1, None
-        height: self.minimum_height
-
-        FieldName:
-            text: " Save path:"
-
-        FieldInput:
-            id: save_path_input
 
     FieldName:
         text: "Datasets:"
@@ -536,12 +528,14 @@ WindowManager:
         size_hint: .2, 1
         on_release:
             root.parent.parent.generate_settings_json()
-            app.root.current = "main_window"
+            if root.parent.parent.get_missing_field_status() == False: \
+            app.root.current = "main_window"; \
             app.root.transition.direction = "left"
 
     Button:
         text: "Load"
         size_hint: .2, 1
+        on_release: root.parent.parent.show_load()
 
     Label:
         text: "Output Settings"
@@ -559,17 +553,6 @@ WindowManager:
     orientation: 'vertical'
     size_hint: 1, None
     height: self.minimum_height
-
-    GridLayout:
-        cols: 2
-        size_hint: 1, None
-        height: self.minimum_height
-
-        FieldName:
-            text: " Save path:"
-
-        FieldInput:
-            id: save_path_input
 
     DefaultSettingFieldsContainer:
         id: default_setting_fields_container
@@ -787,12 +770,12 @@ WindowManager:
     FieldName:
         id: value_name
         size_hint: .115, None
-        text: " ParameterValue"
+        halign: 'right'
+        text: "ParameterValue: "
 
     FieldInput:
         id: value_input
         size_hint: .3, None
-        input_filter: "float"
 
 
 <ConstraintLayout>:
@@ -814,11 +797,13 @@ WindowManager:
     FieldInput:
         id: key_input
         size_hint: .3, None
+        suggestions_source: "constraint_suggestions"
 
     FieldName:
         id: value_name
         size_hint: .15, None
-        text: " Constraint:"
+        halign: 'right'
+        text: "Constraint: "
 
     ConstraintSpinner:
         id: constraint_spinner
@@ -854,6 +839,7 @@ WindowManager:
     text: ""
     valign: "center"
     write_tab: False
+    on_text: root.give_suggestions()
 
 
 <RemoveButton@Button>:
@@ -871,3 +857,63 @@ WindowManager:
 <MediumBuffer@Label>:
     size_hint: 1, None
     height: "30dp"
+
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            filters: ["*.json"]
+            on_submit: root.load(self.path, self.selection)
+            path: root.get_the_path()
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+
+<SaveDialog>:
+    text_input: text_input
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            filters: ["*.json"]
+            on_submit: root.save(filechooser.path, text_input.text)
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+            path: root.get_the_path()
+
+        Label:
+            id: label
+            size_hint_y: None
+            height: 30
+
+        SaveTextInput:
+            id: text_input
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filechooser.path, text_input.text)
+
+<SaveTextInput>:
+    size_hint_y: None
+    height: 30
+    multiline: False
