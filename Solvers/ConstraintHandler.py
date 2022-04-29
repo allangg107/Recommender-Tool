@@ -56,12 +56,13 @@ class PulP(ConstraintSolverInterface):
     if 'constraint_value' in constraintObject:
       value = float(constraintObject['constraint_value'])
     
+    problem_statement = (constraintObject['problem_statement'] if 'problem_statement' in constraintObject else "")
     if op == 'LpMaximize':
       self.numberOfMaxConditionsLimit = 1
-      return LpProblem(constraintObject['problem_statement'], LpMaximize)
+      return LpProblem(problem_statement, LpMaximize)
     elif op == 'LpMinimize':
       self.numberOfMinConditionsLimit = 1
-      return LpProblem(constraintObject['problem_statement'], LpMinimize)
+      return LpProblem(problem_statement, LpMinimize)
     
     elif op == 'max' or op == 'min':
       if op == 'max':
