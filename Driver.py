@@ -1,6 +1,8 @@
 from DataHandler import InputDataHandler
 from Constants import DEFAULT_OUTPUT_LOCATION
 from Loader import CustomizedMetricScoreClassLoader
+from OutputHandler import OutputHandler
+from UserDefinedMetricHandler import CustomizedScoreDictionaryBuilder
 import json
 
 class Driver:
@@ -9,38 +11,26 @@ class Driver:
   
   def drive(self):
     setting = {}
-    outputPath = DEFAULT_OUTPUT_LOCATION
+    # loading the user setting JSON file
     with open(self.settingPath, 'r') as fp:
         setting = json.load(fp)
     
     # load customized metric score calculators
-    customizedScoresDict = {}
-    for scoreCalculatorParam in setting['customized_metric_score']:
-      customizedMetricScoreClassLoader = CustomizedMetricScoreClassLoader(
-        path = scoreCalculatorParam['path'],
-        name = scoreCalculatorParam['name'],
-        kwargs = scoreCalculatorParam['scoreCalculatorParam']
-      )
-      scoreCalculator = customizedMetricScoreClassLoader.loadScore()
-      customizedScoresDict[scoreCalculatorParam['name']] = scoreCalculator.getScore
+    customizedScoreDictBuilder = CustomizedScoreDictionaryBuilder(setting=setting)
+    customizedScoresDict = customizedScoreDictBuilder.buildCustomizedDict()
 
-    # handle data
+    # handle/process data
     recommendation_result = InputDataHandler(
-      kwargs = setting,
+      settingKwargs = setting,
       scoreCalculatorFuncDict = customizedScoresDict
     ).handle(jsonFilePath = setting['input_data_path'])
 
     # output
-    outputDict = {
-      "setting": setting,
-      "recommendation_result": recommendation_result
-    }
-    if 'output' in setting and 'outputFilePath' in setting['output']:
-      outputPath = setting['output']['outputFilePath']
-    
-    if outputPath.lower() == "terminal":
-      print(json.dumps(outputDict, indent=4))
-    else:
-      with open(outputPath, 'w') as fp:
-        json.dump(outputDict, fp, indent=4)
+    outputHandler = OutputHandler(
+      setting=setting
+    )
+    outputHandler.saveOutput(output={
+        "setting": setting,
+        "recommendation_result": recommendation_result
+      })
     

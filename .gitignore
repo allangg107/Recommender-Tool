@@ -1,5 +1,6 @@
 .DS_Store
-Recommender-Tool-dat-branch/.idea
+.idea
 __pycache__
 outputs
 dummyInputs
+tests/integration_outputs/*.json

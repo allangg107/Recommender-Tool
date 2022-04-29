@@ -1,0 +1,256 @@
+{
+  "context":{
+    "GPU": "dummyGPU",
+    "image_size": [224, 224, 3]
+  },
+  "data":{
+    "cifar100":{
+      "EfficientNetB0_0":{
+        "baseline_performance": {
+          "natural_accuracy": 89.75,
+          "natural_precision": 89.84966927588432,
+          "natural_recall": 89.75000000000001,
+          "natural_f1-score": 89.75525642610718,
+          "inference_elapsed_time_per_1000_in_s": 4.430695599999998
+      },
+      "grey-box_setting": {
+        "PGD": {
+            "type_of_attack": "evasion",
+            "attackParams": {
+                "batch_size": 20,
+                "max_iter": 150,
+                "eps": 0.85,
+                "num_random_init": 3
+            },
+            "attacker_performance": {
+                "robust_accuracy": 1.92,
+                "robust_precision": 2.51718052533673,
+                "robust_recall": 1.9200000000000002,
+                "robust_f1-score": 2.0987320627962514
+            },
+            "defenders": [
+                {
+                    "nameOfDefender": "emulated-ae",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "intermediary_size": 28,
+                        "method": "bilinear"
+                    },
+                    "defender_performance": {
+                        "natural_accuracy": 85.68,
+                        "natural_precision": 85.80686387484933,
+                        "natural_recall": 85.68,
+                        "natural_f1-score": 85.67074707812651,
+                        "robust_accuracy": 77.60000000000001,
+                        "robust_precision": 77.84991382138296,
+                        "robust_recall": 77.6,
+                        "robust_f1-score": 77.58655585393535,
+                        "inference_elapsed_time_per_1000_in_s": 0.022953600000000005
+                    }
+                },
+                {
+                    "nameOfDefender": "ae",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "dropout_rate": 0.25,
+                        "loss_func": "mse",
+                        "numOfFilters": 128,
+                        "optimizer": "adam",
+                        "optimizerLR": 1e-05
+                    },
+                    "defender_performance": {
+                        "natural_accuracy": 88.57000000000001,
+                        "natural_precision": 88.70713853537895,
+                        "natural_recall": 88.57000000000002,
+                        "natural_f1-score": 88.59041844822535,
+                        "robust_accuracy": 52.01,
+                        "robust_precision": 53.07239383566198,
+                        "robust_recall": 52.01,
+                        "robust_f1-score": 52.16790895114617,
+                        "inference_elapsed_time_per_1000_in_s": 3.2255319000000027
+                    }
+                },
+                {
+                    "nameOfDefender": "unet",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "dropout_rate": 0.5,
+                        "loss_func": "MSE",
+                        "optimizer": "adam",
+                        "start_neurons": 28
+                    },
+                    "defender_performance": {
+                        "natural_accuracy": 87.53,
+                        "natural_precision": 87.71054323849069,
+                        "natural_recall": 87.53,
+                        "natural_f1-score": 87.55982796104982,
+                        "robust_accuracy": 69.08,
+                        "robust_precision": 69.6747693519404,
+                        "robust_recall": 69.08000000000001,
+                        "robust_f1-score": 69.1703608362908,
+                        "inference_elapsed_time_per_1000_in_s": 7.695110499999997
+                    }
+                },
+                {
+                    "nameOfDefender": "vae",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "latent_dim": 1024,
+                        "optimizer": "adam",
+                        "optimizerLR": 0.0001
+                    },
+                    "defender_performance": {
+                        "natural_accuracy": 66.99000000000001,
+                        "natural_precision": 69.78908597005444,
+                        "natural_recall": 66.99000000000001,
+                        "natural_f1-score": 67.31226474188385,
+                        "robust_accuracy": 66.01,
+                        "robust_precision": 69.03101357258643,
+                        "robust_recall": 66.00999999999999,
+                        "robust_f1-score": 66.42798611238535,
+                        "inference_elapsed_time_per_1000_in_s": 1.6027335999999994
+                    }
+                },
+                {
+                    "nameOfDefender": "jpegCompression",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "quality": 50
+                    },
+                    "defender_performance": {
+                        "natural_accuracy": 89.03,
+                        "natural_precision": 89.2019971505406,
+                        "natural_recall": 89.03000000000002,
+                        "natural_f1-score": 89.05881491479431,
+                        "robust_accuracy": 50.849999999999994,
+                        "robust_precision": 51.85311548026085,
+                        "robust_recall": 50.849999999999994,
+                        "robust_f1-score": 51.02244016384574,
+                        "inference_elapsed_time_per_1000_in_s": 2.248444100000001
+                    }
+                }
+            ]
+        },
+        "FGSM": {
+          "type_of_attack": "evasion",
+          "attackParams": {
+              "batch_size": 20,
+              "eps": 0.9,
+              "num_random_init": 3,
+              "minimal": true
+          },
+          "attacker_performance": {
+              "robust_accuracy": 21.82,
+              "robust_precision": 24.078859667811656,
+              "robust_recall": 21.82,
+              "robust_f1-score": 22.41819910605074
+          },
+          "defenders": [
+              {
+                  "nameOfDefender": "emulated-ae",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "intermediary_size": 28,
+                      "method": "bilinear"
+                  },
+                  "defender_performance": {
+                      "natural_accuracy": 85.68,
+                      "natural_precision": 85.80686387484933,
+                      "natural_recall": 85.68,
+                      "natural_f1-score": 85.67074707812651,
+                      "robust_accuracy": 83.21,
+                      "robust_precision": 83.38947612906205,
+                      "robust_recall": 83.21,
+                      "robust_f1-score": 83.20674368341342,
+                      "inference_elapsed_time_per_1000_in_s": 0.022997599999999997
+                  }
+              },
+              {
+                  "nameOfDefender": "ae",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "dropout_rate": 0.25,
+                      "loss_func": "mse",
+                      "numOfFilters": 128,
+                      "optimizer": "adam",
+                      "optimizerLR": 1e-05
+                  },
+                  "defender_performance": {
+                      "natural_accuracy": 88.57000000000001,
+                      "natural_precision": 88.70713853537895,
+                      "natural_recall": 88.57000000000002,
+                      "natural_f1-score": 88.59041844822535,
+                      "robust_accuracy": 81.89,
+                      "robust_precision": 82.23515424140632,
+                      "robust_recall": 81.89,
+                      "robust_f1-score": 81.95353636118051,
+                      "inference_elapsed_time_per_1000_in_s": 3.1107748999999996
+                  }
+              },
+              {
+                  "nameOfDefender": "unet",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "dropout_rate": 0.5,
+                      "loss_func": "MSE",
+                      "optimizer": "adam",
+                      "start_neurons": 28
+                  },
+                  "defender_performance": {
+                      "natural_accuracy": 87.53,
+                      "natural_precision": 87.71054323849069,
+                      "natural_recall": 87.53,
+                      "natural_f1-score": 87.55982796104982,
+                      "robust_accuracy": 83.24000000000001,
+                      "robust_precision": 83.54651017281778,
+                      "robust_recall": 83.24000000000001,
+                      "robust_f1-score": 83.28815800828944,
+                      "inference_elapsed_time_per_1000_in_s": 7.7011368
+                  }
+              },
+              {
+                  "nameOfDefender": "vae",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "latent_dim": 1024,
+                      "optimizer": "adam",
+                      "optimizerLR": 0.0001
+                  },
+                  "defender_performance": {
+                      "natural_accuracy": 67.23,
+                      "natural_precision": 70.08225616499988,
+                      "natural_recall": 67.22999999999999,
+                      "natural_f1-score": 67.66965408416095,
+                      "robust_accuracy": 66.49000000000001,
+                      "robust_precision": 69.2506217014234,
+                      "robust_recall": 66.49000000000001,
+                      "robust_f1-score": 66.8689100739735,
+                      "inference_elapsed_time_per_1000_in_s": 1.6143081999999993
+                  }
+              },
+              {
+                  "nameOfDefender": "jpegCompression",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "quality": 50
+                  },
+                  "defender_performance": {
+                      "natural_accuracy": 89.03,
+                      "natural_precision": 89.2019971505406,
+                      "natural_recall": 89.03000000000002,
+                      "natural_f1-score": 89.05881491479431,
+                      "robust_accuracy": 82.80999999999999,
+                      "robust_precision": 83.19361211711987,
+                      "robust_recall": 82.81,
+                      "robust_f1-score": 82.87812961461547,
+                      "inference_elapsed_time_per_1000_in_s": 2.2175683
+                  }
+              }
+          ]
+      }
+      }
+      }
+    }
+  }
+  
+}
