@@ -9,7 +9,7 @@ Install all dependencies with:
 pip install -r requirements.txt
 
 # Starting
-Program is started simply by running the command following command in the terminal:
+Program is started simply by running the following command in the terminal:
 
 python main2.py
 
