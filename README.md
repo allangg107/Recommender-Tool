@@ -14,7 +14,7 @@ Program is started simply by running the following command in the terminal:
 python main2.py
 
 # Using
-Click 'Create Data Input File' or 'Create Settings File' to go to the respective page to create each type of file. See 'Creating Data Input File and 'Create Settings File' below for more details.
+Click 'Create Data Input File' or 'Create Settings File' to go to the respective page to create each type of file. See 'Creating Data Input File' and 'Create Settings File' below for more details.
 
 Click 'Choose Setting File' to select the setting file you wish to use to generate the recommendations. Then Click 'Generate Recommendations' to recieve your output at the location specified in the setting file selected, as well as the terminal.
 <img src="https://user-images.githubusercontent.com/76569535/167215666-3dfc5b72-2254-4553-b627-54b41ef93bb0.png" width="75%" height="75%">
