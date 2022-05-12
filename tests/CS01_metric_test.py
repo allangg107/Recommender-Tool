@@ -7,12 +7,12 @@ BETA = 1
 GAMMA = 1
 
 BASELINE_TIME = 10
-BASELINE_NATURAL_ACCURACY = 100
-BASELINE_ROBUST_ACCURACY = 20
+BASELINE_NATURAL_F1 = 100
+BASELINE_ROBUST_F1 = 20
 
 ADDED_TIME = 1
-DENOISED_NATURAL_ACCURACY = 80
-DENOISED_ROBUST_ACCURACY = 40
+DENOISED_NATURAL_F1 = 80
+DENOISED_ROBUST_F1 = 40
 
 def test_CS01():
   cs01 = CS01(kwargs={
@@ -25,21 +25,21 @@ def test_CS01():
     "nameOfDefender": "CS01",
     "baseline_performance":{
       "inference_elapsed_time_per_1000_in_s": BASELINE_TIME,
-      "natural_accuracy": BASELINE_NATURAL_ACCURACY
+      "natural_f1-score": BASELINE_NATURAL_F1
     },
     "attacker_performance": {
-      "robust_accuracy": BASELINE_ROBUST_ACCURACY
+      "robust_f1-score": BASELINE_ROBUST_F1
     },
     "defender_performance":{
       "inference_elapsed_time_per_1000_in_s": ADDED_TIME,
-      "natural_accuracy": DENOISED_NATURAL_ACCURACY,
-      "robust_accuracy": DENOISED_ROBUST_ACCURACY
+      "natural_f1-score": DENOISED_NATURAL_F1,
+      "robust_f1-score": DENOISED_ROBUST_F1
     }
   }
   predictedResult = 0
   predictedResult -= ALPHA * ((ADDED_TIME)/BASELINE_TIME) 
-  predictedResult -= BETA * ((BASELINE_NATURAL_ACCURACY - DENOISED_NATURAL_ACCURACY) / BASELINE_NATURAL_ACCURACY) 
-  predictedResult += GAMMA * ((DENOISED_ROBUST_ACCURACY - BASELINE_ROBUST_ACCURACY) / BASELINE_ROBUST_ACCURACY)
+  predictedResult -= BETA * ((BASELINE_NATURAL_F1 - DENOISED_NATURAL_F1) / BASELINE_NATURAL_F1) 
+  predictedResult += GAMMA * ((DENOISED_ROBUST_F1 - BASELINE_ROBUST_F1) / BASELINE_ROBUST_F1)
   actualResult = cs01.getScore(scoreDictionary=scoreDictionary)
   assert(predictedResult == actualResult['score'])
   
