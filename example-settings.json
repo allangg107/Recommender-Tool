@@ -1,22 +1,21 @@
 {
-  "input_data_path": "example-data-input.json",
+  "input_data_path": "path\\to\\file\\example-data-input.json",
   "customized_metric_score": [
     {
       "name": "CS01",
       "path": "customized_metrics.Metrics",
       "scoreCalculatorParam": {
         "showDetails": true,
-        "parameter_1": 1.0,
-        "parameter_2": 1.0,
-        "parameter_3": 1.0
+        "gamma": 1.0,
+        "beta": 1.0,
+        "alpha": 1.0
       }
     }
   ],
   "solver": {
     "constraints": [
       {
-        "constraint": "LpMaximize",
-        "problem_statement": "best_defender_problem"
+        "constraint": "LpMaximize"
       },
       {
         "constraint": "max",
@@ -32,6 +31,6 @@
     "path": "Solvers.ConstraintHandler"
   },
   "output": {
-    "outputFilePath": "example-generated-output.json"
+    "output_file_path": "path\\to\\file\\example-generated-output.json"
   }
 }
