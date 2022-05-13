@@ -1,0 +1,59 @@
+{
+    "setting": {
+        "input_data_path": "demo-input.json",
+        "customized_metric_score": [
+            {
+                "name": "CS01",
+                "path": "customized_metrics.Metrics",
+                "scoreCalculatorParam": {
+                    "showDetails": true,
+                    "alpha": 1,
+                    "beta": 1,
+                    "gamma": 1
+                }
+            }
+        ],
+        "solver": {
+            "name": "PulP",
+            "path": "Solvers.ConstraintHandler",
+            "constraints": [
+                {
+                    "constraint": "LpMaximize"
+                },
+                {
+                    "constraint": "max",
+                    "metric_name": "CS01"
+                },
+                {
+                    "constraint": ">=",
+                    "constraint_value": 85,
+                    "metric_name": "natural_f1-score"
+                },
+                {
+                    "constraint": "<=",
+                    "constraint_value": 8,
+                    "metric_name": "inference_elapsed_time_per_1000_in_s"
+                }
+            ]
+        },
+        "output": {
+            "output_file_path": "demo-output.json"
+        }
+    },
+    "recommendation_result": {
+        "cifar100": {
+            "EfficientNetB0": {
+                "grey-box_setting": {
+                    "PGD": {
+                        "solver_status": "Optimal solution found",
+                        "recommendation": "Defenders_emulated_ae"
+                    },
+                    "FGSM": {
+                        "solver_status": "Optimal solution found",
+                        "recommendation": "Defenders_emulated_ae"
+                    }
+                }
+            }
+        }
+    }
+}

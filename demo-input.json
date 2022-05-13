@@ -1,0 +1,187 @@
+{
+  "context":{
+    "GPU": "dummyGPU",
+    "image_size": [224, 224, 3]
+  },
+  "data":{
+    "cifar100":{
+      "EfficientNetB0":{
+        "baseline_performance": {
+          "natural_f1-score": 89.00,
+          "inference_elapsed_time_per_1000_in_s": 4.43
+      },
+      "grey-box_setting": {
+        "PGD": {
+            "type_of_attack": "evasion",
+            "attackParams": {
+                "batch_size": 20,
+                "max_iter": 150,
+                "eps": 0.85,
+                "num_random_init": 3
+            },
+            "attacker_performance": {
+                "robust_f1-score": 2.0
+            },
+            "defenders": [
+                {
+                    "nameOfDefender": "emulated-ae",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "intermediary_size": 28,
+                        "method": "bilinear"
+                    },
+                    "defender_performance": {
+                        "natural_f1-score": 85,
+                        "robust_f1-score": 77,
+                        "inference_elapsed_time_per_1000_in_s": 0.023
+                    }
+                },
+                {
+                    "nameOfDefender": "ae",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "dropout_rate": 0.25,
+                        "loss_func": "mse",
+                        "numOfFilters": 128,
+                        "optimizer": "adam",
+                        "optimizerLR": 1e-05
+                    },
+                    "defender_performance": {
+                        "natural_f1-score": 88,
+                        "robust_f1-score": 52,
+                        "inference_elapsed_time_per_1000_in_s": 3.23
+                    }
+                },
+                {
+                    "nameOfDefender": "unet",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "dropout_rate": 0.5,
+                        "loss_func": "MSE",
+                        "optimizer": "adam",
+                        "start_neurons": 28
+                    },
+                    "defender_performance": {
+                        "natural_f1-score": 88,
+                        "robust_f1-score": 69,
+                        "inference_elapsed_time_per_1000_in_s": 7.7
+                    }
+                },
+                {
+                    "nameOfDefender": "vae",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "latent_dim": 1024,
+                        "optimizer": "adam",
+                        "optimizerLR": 0.0001
+                    },
+                    "defender_performance": {
+                      "natural_f1-score": 81,
+                      "robust_f1-score": 77,
+                      "inference_elapsed_time_per_1000_in_s": 3.02
+                    }
+                },
+                {
+                    "nameOfDefender": "jpegCompression",
+                    "type": "PREPROCESSOR",
+                    "defense_params": {
+                        "quality": 23
+                    },
+                    "defender_performance": {
+                        "natural_f1-score": 85,
+                        "robust_f1-score": 69,
+                        "inference_elapsed_time_per_1000_in_s": 2.25
+                    }
+                }
+            ]
+        },
+        "FGSM": {
+          "type_of_attack": "evasion",
+          "attackParams": {
+              "batch_size": 20,
+              "eps": 0.9,
+              "num_random_init": 3,
+              "minimal": true
+          },
+          "attacker_performance": {
+              "robust_f1-score": 21
+          },
+          "defenders": [
+              {
+                  "nameOfDefender": "emulated-ae",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "intermediary_size": 28,
+                      "method": "bilinear"
+                  },
+                  "defender_performance": {
+                      "natural_f1-score": 85,
+                      "robust_f1-score": 83,
+                      "inference_elapsed_time_per_1000_in_s": 0.023
+                  }
+              },
+              {
+                  "nameOfDefender": "ae",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "dropout_rate": 0.25,
+                      "loss_func": "mse",
+                      "numOfFilters": 128,
+                      "optimizer": "adam",
+                      "optimizerLR": 1e-05
+                  },
+                  "defender_performance": {
+                      "natural_f1-score": 88,
+                      "robust_f1-score": 81.95353636118051,
+                      "inference_elapsed_time_per_1000_in_s": 3.23
+                  }
+              },
+              {
+                  "nameOfDefender": "unet",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "dropout_rate": 0.5,
+                      "loss_func": "MSE",
+                      "optimizer": "adam",
+                      "start_neurons": 28
+                  },
+                  "defender_performance": {
+                      "natural_f1-score": 88,
+                      "robust_f1-score": 84,
+                      "inference_elapsed_time_per_1000_in_s": 7.7
+                  }
+              },
+              {
+                  "nameOfDefender": "vae",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "latent_dim": 1024,
+                      "optimizer": "adam",
+                      "optimizerLR": 0.0001
+                  },
+                  "defender_performance": {
+                    "natural_f1-score": 81,
+                    "robust_f1-score": 79,
+                    "inference_elapsed_time_per_1000_in_s": 3.02
+                  }
+              },
+              {
+                  "nameOfDefender": "jpegCompression",
+                  "type": "PREPROCESSOR",
+                  "defense_params": {
+                      "quality": 23
+                  },
+                  "defender_performance": {
+                      "natural_f1-score": 85,
+                      "robust_f1-score": 80,
+                      "inference_elapsed_time_per_1000_in_s": 2.25
+                  }
+              }
+          ]
+      }
+      }
+      }
+    }
+  }
+  
+}
