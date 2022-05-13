@@ -1,0 +1,42 @@
+{
+  "context": {
+    "GPU": "dummyGPU",
+    "image_size": [
+      224,
+      224,
+      3
+    ]
+  },
+  "data": {
+    "data_set_1_name": {
+      "model_1_name": {
+        "baseline_performance": {
+          "performance_metric_1": 89.75
+        },
+        "threatmodel_1_name": {
+          "attacker_1": {
+            "attackParams": {
+              "parameter_1": 20.0
+            },
+            "attacker_performance": {
+              "performance_metric_1": 1.92
+            },
+            "defenders": [
+              {
+                "defense_params": {
+                  "parameter_1": "bilinear"
+                },
+                "defender_performance": {
+                  "performance_metric_1": 85.68
+                },
+                "nameOfDefender": "emulated-ae",
+                "type": "PREPROCESSOR"
+              },              
+            ],
+            "type_of_attack": "evasion"          
+          }
+        }
+      }
+    }
+  }
+}
