@@ -228,15 +228,11 @@ def test_integration_01():
                 "grey-box_setting": {
                     "PGD": {
                         "solver_status": "Optimal solution found",
-                        "recommendations": [
-                            "Defenders_emulated_ae"
-                        ]
+                        "recommendation": "Defenders_emulated_ae"
                     },
                     "FGSM": {
                         "solver_status": "Optimal solution found",
-                        "recommendations": [
-                            "Defenders_emulated_ae"
-                        ]
+                        "recommendation": "Defenders_emulated_ae"
                     }
                 }
             }
@@ -352,15 +348,11 @@ def test_integration_02():
                 "grey-box_setting": {
                     "PGD": {
                         "solver_status": "Optimal solution found",
-                        "recommendations": [
-                            "Defenders_unet"
-                        ]
+                        "recommendation": "Defenders_unet"
                     },
                     "FGSM": {
                         "solver_status": "Optimal solution found",
-                        "recommendations": [
-                            "Defenders_jpegCompression"
-                        ]
+                        "recommendation": "Defenders_jpegCompression"
                     }
                 }
             }

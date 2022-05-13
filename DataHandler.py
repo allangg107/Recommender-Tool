@@ -113,10 +113,10 @@ class InputDataHandler:
         scoreDictionary = scoreDictionary
       )
 
-      recommendations, status = self._solveConstraintProblem(defenderDict = defenderDict)
+      recommendation, status = self._solveConstraintProblem(defenderDict = defenderDict)
       recommendation_result[datasetName][modelName][threatModel][attackerName] = {
         "solver_status": status,
-        "recommendations": recommendations
+        "recommendation": recommendation
       }
     return recommendation_result
 
@@ -149,10 +149,10 @@ class InputDataHandler:
   """
   This private method solves the problem given a set of constraints
   @param defenderDict dictionary where key is a name of a defender and value is its performance object
-  @return a tuple of recommendations and stateus dictionary
+  @return a tuple of recommendation and status dictionary
   """
   def _solveConstraintProblem(self, defenderDict):
-    recommendations = []
+    recommendation = None
     statusCode = 0
     if self.settingKwargs is not None and self.settingKwargs != {}:
       constraintObjectList = self.settingKwargs['solver']['constraints']
@@ -166,5 +166,7 @@ class InputDataHandler:
       statusCode = constraintSolver.solve()
       for v in constraintSolver.getVariables():
         if v.varValue > 0:
-          recommendations.append(v.name)
-    return recommendations, STATUS_DICT[statusCode]
+          recommendation = v.name
+      if statusCode != 1: # either problem is infeasible or not solved
+        recommendation = None
+    return recommendation, STATUS_DICT[statusCode]

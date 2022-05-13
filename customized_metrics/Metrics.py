@@ -4,8 +4,8 @@ class CS01(CustomizedMetricScoreInterface):
   def __init__(self, kwargs):
     CustomizedMetricScoreInterface.__init__(self, kwargs=kwargs)
     self.alpha = self.kwargs['alpha']  # time tradeoff coefficient
-    self.beta = self.kwargs['beta']    # natural accuracy tradeoff coefficient
-    self.gamma = self.kwargs['gamma']  # robust accuracy coefficient
+    self.beta = self.kwargs['beta']    # natural tradeoff coefficient
+    self.gamma = self.kwargs['gamma']  # robust coefficient
     self.showDetails = self.kwargs['showDetails']
 
   """
@@ -17,15 +17,15 @@ class CS01(CustomizedMetricScoreInterface):
     initialTime = scoreDictionary['baseline_performance']['inference_elapsed_time_per_1000_in_s']
     addedTime = scoreDictionary['defender_performance']['inference_elapsed_time_per_1000_in_s']
 
-    naturalAccuracyWithoutDefense = scoreDictionary['baseline_performance']['natural_accuracy']
-    robustAccuracyWithoutDefense = scoreDictionary['attacker_performance']['robust_accuracy']
+    naturalF1ScoreWithoutDefense = scoreDictionary['baseline_performance']['natural_f1-score']
+    robustF1ScoreWithoutDefense = scoreDictionary['attacker_performance']['robust_f1-score']
 
-    naturalAccuracyWithDefense = scoreDictionary['defender_performance']['natural_accuracy']
-    robustAccuracyWithDefense = scoreDictionary['defender_performance']['robust_accuracy']
+    naturalF1ScoreWithDefense = scoreDictionary['defender_performance']['natural_f1-score']
+    robustF1ScoreWithDefense = scoreDictionary['defender_performance']['robust_f1-score']
 
     timeTradeOff = self.alpha * ((addedTime) / initialTime)
-    naturalAccTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
-    robustAccImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
+    naturalAccTradeOff = self.beta * ((naturalF1ScoreWithDefense - naturalF1ScoreWithoutDefense) / naturalF1ScoreWithoutDefense)
+    robustAccImprove = self.gamma * ((robustF1ScoreWithDefense - robustF1ScoreWithoutDefense) / robustF1ScoreWithoutDefense)
 
     CS01_score = ( -timeTradeOff + \
        naturalAccTradeOff + \

@@ -134,7 +134,7 @@ def test_InputDataHander_no_solving():
         'grey-box_setting': {
           'PGD': {
             'solver_status': 'Not solved',
-            'recommendations': []
+            'recommendation': None
           }
         }
       }
@@ -148,9 +148,9 @@ def test_InputDataHander_no_solving():
     scoreCalculatorFuncDict={},
     settingKwargs={}
   )
-  recommendations = inputDataHandler.handle(jsonFilePath=(createTemp.tempFileName))
+  recommendation = inputDataHandler.handle(jsonFilePath=(createTemp.tempFileName))
   createTemp.closeTempFile()
-  assert(expected_recommendation_result == recommendations)
+  assert(expected_recommendation_result == recommendation)
 
 def test_InputDataHander_with_solving_without_customized_metric():
   # create solver file
@@ -180,7 +180,7 @@ def test_InputDataHander_with_solving_without_customized_metric():
         'grey-box_setting': {
           'PGD': {
             'solver_status': 'Optimal solution found',
-            'recommendations': ["Defenders_defender_1"]
+            'recommendation': "Defenders_defender_1"
           }
         }
       }
@@ -193,9 +193,9 @@ def test_InputDataHander_with_solving_without_customized_metric():
     scoreCalculatorFuncDict={},
     settingKwargs=settingKwargs
   )
-  recommendations = inputDataHandler.handle(jsonFilePath=(createTemp.tempFileName))
+  recommendation = inputDataHandler.handle(jsonFilePath=(createTemp.tempFileName))
   createTemp.closeTempFile()
-  assert(expected_recommendation_result == recommendations)
+  assert(expected_recommendation_result == recommendation)
 
 def test_InputDataHander_with_solving_with_customized_metric():
   from Loader import CustomizedMetricScoreClassLoader
@@ -285,19 +285,19 @@ def test_InputDataHander_with_solving_with_customized_metric():
     scoreCalculatorFuncDict=customizedScoresDict,
     settingKwargs=settingKwargs
   )
-  recommendations = inputDataHandler.handle(jsonFilePath=(input_data_createTemp.tempFileName))
+  recommendation = inputDataHandler.handle(jsonFilePath=(input_data_createTemp.tempFileName))
   expected_recommendation_result = defaultdict()
   expected_recommendation_result['dataset_1'] = {
       'model_1': {
         'grey-box_setting': {
           'PGD': {
             'solver_status': 'Optimal solution found',
-            'recommendations': ["Defenders_defender_2"]
+            'recommendation': "Defenders_defender_2"
           }
         }
       }
   }
-  assert(expected_recommendation_result == recommendations)
+  assert(expected_recommendation_result == recommendation)
   metric_createTemp.closeTempFile()
   input_data_createTemp.closeTempFile()
   solver_createTemp.closeTempFile()
