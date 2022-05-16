@@ -12,10 +12,11 @@ class InputDataHandler:
       Key of scoreCalculatorFuncDict is the metric name and value is a callable method to calculate the score
   settingKwargs: user setting including constraints and path to solvers and user-defined metric score implementation
   """
-  def __init__(self, scoreCalculatorFuncDict = {}, verbose = False, settingKwargs = {}):
+  def __init__(self, scoreCalculatorFuncDict = {}, verbose = False, settingKwargs = {}, show_outcome_details = False):
     self.scoreCalculatorFuncDict = scoreCalculatorFuncDict
     self.verbose = verbose
     self.settingKwargs = settingKwargs
+    self.show_outcome_details = (show_outcome_details if 'show_outcome_details' not in settingKwargs else settingKwargs['show_outcome_details'])
 
   """
   This public method parses and processes the input data
@@ -118,6 +119,8 @@ class InputDataHandler:
         "solver_status": status,
         "recommendation": recommendation
       }
+      if self.show_outcome_details:
+        recommendation_result[datasetName][modelName][threatModel][attackerName]["outcome_details"] = [denoiserPerformanceObeject for denoiserName, denoiserPerformanceObeject in defenderDict.items()]
     return recommendation_result
 
   """
@@ -139,7 +142,7 @@ class InputDataHandler:
             scoreName = scoreCalculatorFuncName
             score = result['score']
             defenderDict[defenderObject['nameOfDefender']]['defender_performance'][scoreName] = score
-
+            defenderDict[defenderObject['nameOfDefender']]['defender_performance']['details_of_{}'.format(scoreName)] = result # additional details of output of user-defined metric
             if self.verbose:
               print("\n[InputDataHandler] datasetName: {}, modelName: {}, threatModel: {}, attackerName: {}, defender's name: {}, cs01_score: {}".format(
                       datasetName, modelName, threatModel, attackerName, defenderObject['nameOfDefender'], score

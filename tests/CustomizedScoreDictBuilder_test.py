@@ -13,19 +13,19 @@ def getScore(self, scoreDictionary):
   robustAccuracyWithDefense = scoreDictionary['defender_performance']['robust_accuracy']
 
   timeTradeOff = self.alpha * ((addedTime) / initialTime)
-  naturalAccTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
-  robustAccImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
+  naturalF1ScoreTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
+  robustF1ScoreImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
 
   MetricClone_score = ( -timeTradeOff + \
-    naturalAccTradeOff + \
-      robustAccImprove)
+    naturalF1ScoreTradeOff + \
+      robustF1ScoreImprove)
   result = {
     "denoiser_name": scoreDictionary['nameOfDefender'],
     "score": MetricClone_score,        # required from users
     "details" : {
       "timeTradeOff": timeTradeOff,
-      "naturalAccTradeOff": naturalAccTradeOff,
-      "robustAccImprove": robustAccImprove
+      "naturalF1ScoreTradeOff": naturalF1ScoreTradeOff,
+      "robustF1ScoreImprove": robustF1ScoreImprove
     }
   }
   if self.showDetails:
@@ -68,19 +68,19 @@ def test_buildCustomizedDict_with_non_empty_valid_setting():
       robustAccuracyWithDefense = scoreDictionary['defender_performance']['robust_accuracy']
 
       timeTradeOff = self.alpha * ((addedTime) / initialTime)
-      naturalAccTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
-      robustAccImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
+      naturalF1ScoreTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
+      robustF1ScoreImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
 
       MetricClone_score = ( -timeTradeOff + \
-        naturalAccTradeOff + \
-          robustAccImprove)
+        naturalF1ScoreTradeOff + \
+          robustF1ScoreImprove)
       result = {
         "denoiser_name": scoreDictionary['nameOfDefender'],
         "score": MetricClone_score,        # required from users
         "details" : {
           "timeTradeOff": timeTradeOff,
-          "naturalAccTradeOff": naturalAccTradeOff,
-          "robustAccImprove": robustAccImprove
+          "naturalF1ScoreTradeOff": naturalF1ScoreTradeOff,
+          "robustF1ScoreImprove": robustF1ScoreImprove
         }
       }
       if self.showDetails:

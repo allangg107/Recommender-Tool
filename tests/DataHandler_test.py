@@ -146,7 +146,8 @@ def test_InputDataHander_no_solving():
 
   inputDataHandler = InputDataHandler(
     scoreCalculatorFuncDict={},
-    settingKwargs={}
+    settingKwargs={},
+    show_outcome_details=False
   )
   recommendation = inputDataHandler.handle(jsonFilePath=(createTemp.tempFileName))
   createTemp.closeTempFile()
@@ -191,7 +192,8 @@ def test_InputDataHander_with_solving_without_customized_metric():
 
   inputDataHandler = InputDataHandler(
     scoreCalculatorFuncDict={},
-    settingKwargs=settingKwargs
+    settingKwargs=settingKwargs,
+    show_outcome_details=False
   )
   recommendation = inputDataHandler.handle(jsonFilePath=(createTemp.tempFileName))
   createTemp.closeTempFile()
@@ -243,18 +245,18 @@ def test_InputDataHander_with_solving_with_customized_metric():
       robustAccuracyWithDefense = scoreDictionary['defender_performance']['robust_accuracy']
 
       timeTradeOff = self.alpha * ((addedTime) / initialTime)
-      naturalAccTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
+      naturalAccScoreTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
       robustAccImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
 
       MetricClone_score = ( -timeTradeOff + \
-        naturalAccTradeOff + \
+        naturalAccScoreTradeOff + \
           robustAccImprove)
       result = {
         "denoiser_name": scoreDictionary['nameOfDefender'],
         "score": MetricClone_score,        # required from users
         "details" : {
           "timeTradeOff": timeTradeOff,
-          "naturalAccTradeOff": naturalAccTradeOff,
+          "naturalAccScoreTradeOff": naturalAccScoreTradeOff,
           "robustAccImprove": robustAccImprove
         }
       }
@@ -283,7 +285,8 @@ def test_InputDataHander_with_solving_with_customized_metric():
 
   inputDataHandler = InputDataHandler(
     scoreCalculatorFuncDict=customizedScoresDict,
-    settingKwargs=settingKwargs
+    settingKwargs=settingKwargs,
+    show_outcome_details=False
   )
   recommendation = inputDataHandler.handle(jsonFilePath=(input_data_createTemp.tempFileName))
   expected_recommendation_result = defaultdict()

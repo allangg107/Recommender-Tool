@@ -1,4 +1,6 @@
 # integration test
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
 from Utils import CreateTemp
 import tempfile
 import json
@@ -104,19 +106,19 @@ METRIC_CALCULATOR_CODE = """from Interfaces import CustomizedMetricScoreInterfac
       robustAccuracyWithDefense = scoreDictionary['defender_performance']['robust_accuracy']
 
       timeTradeOff = self.alpha * ((addedTime) / initialTime)
-      naturalAccTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
-      robustAccImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
+      naturalF1ScoreTradeOff = self.beta * ((naturalAccuracyWithDefense - naturalAccuracyWithoutDefense) / naturalAccuracyWithoutDefense)
+      robustF1ScoreImprove = self.gamma * ((robustAccuracyWithDefense - robustAccuracyWithoutDefense) / robustAccuracyWithoutDefense)
 
       MetricClone_score = ( -timeTradeOff + \
-        naturalAccTradeOff + \
-          robustAccImprove)
+        naturalF1ScoreTradeOff + \
+          robustF1ScoreImprove)
       result = {
         "denoiser_name": scoreDictionary['nameOfDefender'],
         "score": MetricClone_score,        # required from users
         "details" : {
           "timeTradeOff": timeTradeOff,
-          "naturalAccTradeOff": naturalAccTradeOff,
-          "robustAccImprove": robustAccImprove
+          "naturalF1ScoreTradeOff": naturalF1ScoreTradeOff,
+          "robustF1ScoreImprove": robustF1ScoreImprove
         }
       }
       if self.showDetails:

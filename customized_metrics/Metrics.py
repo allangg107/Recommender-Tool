@@ -24,20 +24,20 @@ class CS01(CustomizedMetricScoreInterface):
     robustF1ScoreWithDefense = scoreDictionary['defender_performance']['robust_f1-score']
 
     timeTradeOff = self.alpha * ((addedTime) / initialTime)
-    naturalAccTradeOff = self.beta * ((naturalF1ScoreWithDefense - naturalF1ScoreWithoutDefense) / naturalF1ScoreWithoutDefense)
-    robustAccImprove = self.gamma * ((robustF1ScoreWithDefense - robustF1ScoreWithoutDefense) / robustF1ScoreWithoutDefense)
+    naturalF1ScoreTradeOff = self.beta * ((naturalF1ScoreWithDefense - naturalF1ScoreWithoutDefense) / naturalF1ScoreWithoutDefense)
+    robustF1ScoreImprove = self.gamma * ((robustF1ScoreWithDefense - robustF1ScoreWithoutDefense) / robustF1ScoreWithoutDefense)
 
     CS01_score = ( -timeTradeOff + \
-       naturalAccTradeOff + \
-         robustAccImprove)
+       naturalF1ScoreTradeOff + \
+         robustF1ScoreImprove)
 
     result = {
       "denoiser_name": scoreDictionary['nameOfDefender'],
       "score": CS01_score,        # required from users
       "details" : {
         "timeTradeOff": timeTradeOff,
-        "naturalF1ScoreTradeOff": naturalAccTradeOff,
-        "robustF1ScoreImprove": robustAccImprove
+        "naturalF1ScoreTradeOff": naturalF1ScoreTradeOff,
+        "robustF1ScoreImprove": robustF1ScoreImprove
       }
     }
     if self.showDetails:
