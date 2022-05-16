@@ -30,31 +30,29 @@ WindowManager:
 
     Button:
         text: "Create Data Input File"
-        color: 1, 0, 1, 1
+#        color: 1, 0, 1, 1
         on_release:
             app.root.current = "data_window"
             app.root.transition.direction = "left"
 
     Button:
         text: "Create Settings File"
-        color: 1, 0, 1, 1
         on_release:
             app.root.current = "settings_window"
             app.root.transition.direction = "left"
 
     Button:
-        text: "Choose Settings File: \n''"
+        text: "Choose Settings File:\n''"
         base_text: "Choose Setting File:\n"
+        halign: "center"
         id: choose_settings
-        color: 1, 0, 1, 1
         on_release: root.parent.parent.show_load()
 
     Button:
         text: "Generate Recommendations"
-        color: 1, 0, 1, 1
         on_release:
             root.parent.parent.generate_button()
-            # if root.parent.parent.get_missing_field_status == False: \
+            if root.parent.parent.get_missing_field_status == False: \
             app.root.current = "recommendations_window"; \
             app.root.transition.direction = "left"
 
@@ -103,6 +101,7 @@ WindowManager:
 
     Label:
         text: "ML Model Data"
+        font_size: 24
 
 
 <DataFieldsScrollView@ScrollView>:
@@ -555,6 +554,7 @@ WindowManager:
 
     Label:
         text: "Output Settings"
+        font_size: 24
 
 
 <AllSettingFieldsScrollView@ScrollView>:
