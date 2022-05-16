@@ -36,8 +36,8 @@ class CS01(CustomizedMetricScoreInterface):
       "score": CS01_score,        # required from users
       "details" : {
         "timeTradeOff": timeTradeOff,
-        "naturalAccTradeOff": naturalAccTradeOff,
-        "robustAccImprove": robustAccImprove
+        "naturalF1ScoreTradeOff": naturalAccTradeOff,
+        "robustF1ScoreImprove": robustAccImprove
       }
     }
     if self.showDetails:
