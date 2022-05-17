@@ -35,9 +35,9 @@ class CS01(CustomizedMetricScoreInterface):
       "denoiser_name": scoreDictionary['nameOfDefender'],
       "score": CS01_score,        # required from users
       "details" : {
-        "timeTradeOff": timeTradeOff,
-        "naturalF1ScoreTradeOff": naturalF1ScoreTradeOff,
-        "robustF1ScoreImprove": robustF1ScoreImprove
+        "weighted_inference_time_tradeOff": timeTradeOff,
+        "weighted_natural_F1_score_tradeOff": naturalF1ScoreTradeOff,
+        "weighted_robust_F1_score_improvement": robustF1ScoreImprove
       }
     }
     if self.showDetails:
