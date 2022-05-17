@@ -995,7 +995,7 @@ class RecommendationsWindow(Screen):
         #
         # self.ids.recommendations_scrollview.ids.recommendations_container.ids.field_label.text = list(output_dictionary["recommendation_result"].keys())[0]
 
-        self.ids.recommendations_scrollview.ids.recommendations_container.ids.field_label.text = "Tips: Constraint Solver loggings can be found in the terminal"
+        self.ids.recommendations_scrollview.ids.recommendations_container.ids.field_label.text = "Tips: Constraint Solver loggings can be found in the terminal\n"
 
 
 class RecommendationsContainer(BoxLayout):
