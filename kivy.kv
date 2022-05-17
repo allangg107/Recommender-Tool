@@ -879,34 +879,58 @@ WindowManager:
     do_scroll_x: False
     do_scroll_y: True
 
-    RecommendationsContainer:
-        id: recommendations_container
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, None
+        height: self.minimum_height
+        id: sub_layer_container
 
 
-<RecommendationsContainer>:
+<RecommendationContainer>:
     orientation: 'vertical'
     size_hint: 1, None
     height: self.minimum_height
 
     BoxLayout:
+        id: layer_container
         orientation: 'horizontal'
         size_hint: 1, None
-        height: self.minimum_height
+        height: layer_container.minimum_height
 
-        Label:
-            id: field_label
-            font_size: 15
-            text: "default"
+        Button:
+            id: expansion_button
+            text: "-"
             size_hint: None, None
             height: "30dp"
-            width: self.texture_size[0]
+            width: "30dp"
+            on_press:
+            # expands/collapses the contents
+                if sub_layer_container.opacity == 1: \
+                sub_layer_container.opacity = 0 ; \
+                sub_layer_container.height = 0 ; \
+                self.text = "+"
+                else: \
+                sub_layer_container.opacity = 1 ; \
+                sub_layer_container.height = sub_layer_container.minimum_height ; \
+                self.text = "-"
 
-#        Button:
-#            id: expansion_button
-#            text: "+"
-#            size_hint: None, None
-#            height: "30dp"
-#            width: "30dp"
+        RecommendationLabel:
+            id: layer_label
+            text: "layer default"
+
+    BoxLayout:
+        id: sub_layer_container
+        orientation: 'vertical'
+        size_hint_y: None
+        height: sub_layer_container.minimum_height
+
+
+<RecommendationLabel>:
+    font_size: 15
+    text: "default"
+    size_hint: None, None
+    height: "30dp"
+    width: self.texture_size[0]
 
 
 <FieldName>:

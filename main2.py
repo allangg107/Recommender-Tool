@@ -988,29 +988,63 @@ class AddCustomConstraints(BoxLayout):
 
 
 class RecommendationsWindow(Screen):
+    # extract the recommendations into dictionary form from the given settings file
     def extract_recommendations(self, settings_filename):
-        # COMMENTED CODE *WORKS* TO ACCESS OUTPUT FILE
+        settings_file = open(settings_filename)
+        settings_dictionary = json.load(settings_file)
+        settings_file.close()
 
-        # settings_file = open(settings_filename)
-        # settings_dictionary = json.load(settings_file)
-        # settings_file.close()
-        #
-        # output_path = settings_dictionary["output"]["output_file_path"]
-        # output_file = open(output_path)
-        # output_dictionary = json.load(output_file)
-        # output_file.close()
-        #
-        # self.ids.recommendations_scrollview.ids.recommendations_container.ids.field_label.text = list(output_dictionary["recommendation_result"].keys())[0]
+        output_path = settings_dictionary["output"]["output_file_path"]
+        output_file = open(output_path)
+        output_dictionary = json.load(output_file)
+        output_file.close()
 
-        self.ids.recommendations_scrollview.ids.recommendations_container.ids.field_label.text = "Tips: Constraint Solver loggings can be found in the terminal\n"
+        self.present_recommendations(output_dictionary)
+
+    # present the recommendations in the given dictionary
+    def present_recommendations(self, output_dictionary):
+        # add a recommendation container containing the information of each dataset, model classifier, threat model,
+        # and attacker
+        # a recommendation container has a button to expand/collapse each section as well as a label to display
+        # the content
+        for dataset in output_dictionary["recommendation_result"]:
+            # each level of the loop is creating a container in the given parent container with the given text
+            dataset_rc = self.add_recommendation_container(self.ids.recommendations_scrollview, " Dataset: " + dataset)
+
+            for model_classifier in output_dictionary["recommendation_result"][dataset]:
+                model_classifier_rc = self.add_recommendation_container(dataset_rc, "    Model Classifier: " + model_classifier)
+
+                for threat_model in output_dictionary["recommendation_result"][dataset][model_classifier]:
+                    threat_model_rc = self.add_recommendation_container(model_classifier_rc, "        Threat Model: " + threat_model)
+
+                    for attack in output_dictionary["recommendation_result"][dataset][model_classifier][threat_model]:
+                        attack_rc = self.add_recommendation_container(threat_model_rc, "            Attacker Model: " + attack)
+
+                        solver_status = RecommendationLabel(text="                        Solver Status: " + output_dictionary["recommendation_result"][dataset][model_classifier][threat_model][attack]["solver_status"])
+                        recommended_defender = RecommendationLabel(text="                        Recommended Defender: " +output_dictionary["recommendation_result"][dataset][model_classifier][threat_model][attack]["recommendation"])
+                        attack_rc.ids.sub_layer_container.add_widget(solver_status)
+                        attack_rc.ids.sub_layer_container.add_widget(recommended_defender)
+
+    # creates a container in the given parent container with the given text and returns the created container
+    def add_recommendation_container(self, parent_container, layer_label_text):
+        rc = RecommendationContainer()
+        rc.ids.layer_label.text = layer_label_text
+        parent_container.ids.sub_layer_container.add_widget(rc)
+        return rc
 
 
-class RecommendationsContainer(BoxLayout):
-    def add_child(self):
-        pass
+# contains an expand/collapse button, a label for the layer (dataset or model classifier or threat model etc.)
+# and contains a BoxLayout to store its nested layer (ex: dataset would store model classifiers)
+class RecommendationContainer(BoxLayout):
+    pass
 
 
-# a Label with defined attributes regularly used to have consistent Labels
+# a Label with defined attributes regularly used to have consistent Recommendation Labels
+class RecommendationLabel(Label):
+    pass
+
+
+# a Label with defined attributes regularly used to have consistent Labels for fields
 class FieldName(Label):
     pass
 
