@@ -52,9 +52,10 @@ WindowManager:
         text: "Generate Recommendations"
         on_release:
             root.parent.parent.generate_button()
-            if root.parent.parent.get_missing_field_status == False: \
-            app.root.current = "recommendations_window"; \
-            app.root.transition.direction = "left"
+            if root.parent.parent.chose_setting_path() == True: \
+            app.root.transition.direction = "left"; \
+            app.root.current = "recommendations_window"
+
 
 
 <DataWindow>:

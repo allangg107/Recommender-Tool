@@ -170,6 +170,13 @@ class MainWindow(Screen):
         global _Missing_Field
         return _Missing_Field
 
+    def chose_setting_path(self):
+        global _Chosen_Setting_File_Path
+        if len(_Chosen_Setting_File_Path) != 0:
+            return True
+        else:
+            return False
+
     # dismiss the file explorer
     def dismiss_popup(self):
         self._popup.dismiss()
