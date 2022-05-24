@@ -1,0 +1,1030 @@
+WindowManager:
+    id: window_manager
+
+    MainWindow:
+    DataWindow:
+    SettingsWindow:
+        id: settings_window
+    RecommendationsWindow:
+        id: recommendations_window
+
+
+<MainWindow>:
+    name: "main_window"
+    id: main_window
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            text: "Recommender Tool v1.0"
+            font_size: "20dp"
+            size_hint: 1, .2
+
+        MainMenuButtonsContainer:
+            id: main_menu_buttons_container
+
+
+<MainMenuButtonsContainer@BoxLayout>:
+    size_hint: 1, .5
+
+    Button:
+        text: "Create Data Input File"
+#        color: 1, 0, 1, 1
+        on_release:
+            app.root.current = "data_window"
+            app.root.transition.direction = "left"
+
+    Button:
+        text: "Create Settings File"
+        on_release:
+            app.root.current = "settings_window"
+            app.root.transition.direction = "left"
+
+    Button:
+        text: "Choose Settings File:\n''"
+        base_text: "Choose Setting File:\n"
+        halign: "center"
+        id: choose_settings
+        on_release: root.parent.parent.show_load()
+
+    Button:
+        text: "Generate Recommendations"
+        on_release:
+            root.parent.parent.generate_button()
+            if root.parent.parent.chose_setting_path() == True: \
+            app.root.transition.direction = "left"; \
+            app.root.current = "recommendations_window"
+
+
+
+<DataWindow>:
+    name: "data_window"
+    id: data_window
+
+    BoxLayout:
+        id: data_boxlayout
+        orientation: 'vertical'
+
+        ModelDataMenuBarBoxLayout:
+
+        DataFieldsScrollView:
+            id: data_fields_scrollview
+
+
+<ModelDataMenuBarBoxLayout@BoxLayout>:
+    size_hint: 1, .1
+
+    Button:
+        text: "Back"
+        size_hint: .2, 1
+        on_release:
+            app.root.current = "main_window"
+            app.root.transition.direction = "right"
+
+    Button:
+        text: "Save"
+        size_hint: .2, 1
+        on_release:
+            root.parent.parent.generate_ml_model_data_json()
+
+    Button:
+        text: "Load"
+        size_hint: .2, 1
+        on_release: root.parent.parent.show_load()
+
+    Button:
+        text: "Finished"
+        size_hint: .2, 1
+        on_release:
+            app.root.current = "main_window"
+            app.root.transition.direction = "left"
+
+    Label:
+        text: "ML Model Data"
+        font_size: 24
+
+
+<DataFieldsScrollView@ScrollView>:
+    do_scroll_x: False
+    do_scroll_y: True
+
+    AllDatasetsContainer:
+        id: all_datasets_container
+
+
+<AllDatasetsContainer>
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: "Datasets:"
+
+    DatasetsContainer:
+        id: datasets_container
+
+    Button:
+        text: "add dataset"
+        size_hint: .985, None
+        height: "30dp"
+        on_release: datasets_container.add_dataset()
+        pos_hint: {'right': 1}
+
+
+<DatasetsContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    DatasetContainer:
+
+
+<DatasetContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldName:
+            text: " Dataset #"
+
+        RemoveButton:
+            text: "Remove Dataset"
+
+        FieldName:
+            text: " Dataset Name:"
+
+        FieldInput:
+            id: dataset_name_input
+
+    AllDataModelsContainer:
+        id: all_data_models_container
+
+
+<AllDataModelsContainer>
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: " Models:"
+
+    DataModelsContainer:
+        id: data_models_container
+
+    Button:
+        text: "add model"
+        size_hint: .925, None
+        height: "30dp"
+        on_release: data_models_container.add_model()
+        pos_hint: {'right': 1}
+
+    SmallBuffer:
+
+
+<DataModelsContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    ModelContainer:
+
+
+<ModelContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    ModelFields:
+        id: model_fields
+
+    ModelPerformance:
+        id: model_performance
+
+    Button:
+        text: "add parameter"
+        size_hint: .715, None
+        height: "30dp"
+        on_release: model_performance.add_parameter()
+        pos_hint: {'right': 1}
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldName:
+            text: "         Threat Models:"
+
+    ThreatModelsContainer:
+        id: threat_models_container
+
+    Button:
+        text: "add threat model"
+        size_hint: .89, None
+        height: "30dp"
+        on_release: threat_models_container.add_threat_model()
+        pos_hint: {'right': 1}
+
+    SmallBuffer:
+
+
+<ModelFields@GridLayout>:
+    cols: 2
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: "  Model #"
+
+    RemoveButton:
+        text: "Remove Model"
+
+    FieldName:
+        text: "  Model Classifier:"
+
+    FieldInput:
+        id: model_classifier_input
+
+    FieldName:
+        text: "     Baseline performance:"
+
+    FieldName:
+
+
+<ModelPerformance>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<ThreatModelsContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    ThreatModelContainer:
+
+
+<ThreatModelContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldName:
+            text: " Threat Model #"
+
+        RemoveButton:
+            text: "Remove Threat Model"
+
+        FieldName:
+            text: " Threat Model Name:"
+
+        FieldInput:
+            id: threat_model_name_input
+
+        FieldName:
+            text: "         Attackers:"
+
+    AttackersContainer:
+        id: attackers_container
+
+    Button:
+        text: "add attacker"
+        size_hint: .855, None
+        height: "30dp"
+        on_release: attackers_container.add_attacker()
+        pos_hint: {'right': 1}
+
+    SmallBuffer:
+
+
+<AttackersContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    AttackerContainer:
+
+
+<AttackerContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    AttackerFields:
+        id: attacker_fields
+
+    AttackParameters:
+        id: attack_parameters
+
+    Button:
+        text: "add parameter"
+        size_hint: .715, None
+        height: "30dp"
+        on_release: attack_parameters.add_parameter()
+        pos_hint: {'right': 1}
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldName:
+            text: "             Attacker performance:"
+
+        FieldName:
+
+    AttackerPerformance:
+        id: attacker_performance
+
+    Button:
+        text: "add parameter"
+        size_hint: .715, None
+        height: "30dp"
+        on_release: attacker_performance.add_parameter()
+        pos_hint: {'right': 1}
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldName:
+            text: "                 Defenders:"
+
+        FieldName:
+
+    DefendersContainer:
+        id: defenders_container
+
+    Button:
+        text: "add defender"
+        size_hint: .785, None
+        height: "30dp"
+        on_release: defenders_container.add_defender()
+        pos_hint: {'right': 1}
+
+    SmallBuffer:
+
+
+<AttackerFields@GridLayout>:
+    cols: 2
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: "             Attacker #"
+
+    RemoveButton:
+        text: "Remove Attacker"
+
+    FieldName:
+        text: "             Name of attacker:"
+
+    FieldInput:
+        id: attacker_name_input
+
+    FieldName:
+        text: "             Type of attack:"
+
+    FieldInput:
+        id: attacker_type_input
+
+    FieldName:
+        text: "             Attack parameters:"
+
+    FieldName:
+
+
+<AttackParameters>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<AttackerPerformance>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<DefendersContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    DefenderContainer:
+        id: defender_container
+
+
+<DefenderContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    DefenderFields:
+        id: defender_fields
+
+    DefenseParameters:
+        id: defense_parameters
+
+    Button:
+        text: "add parameter"
+        size_hint: .715, None
+        height: "30dp"
+        on_release: defense_parameters.add_parameter()
+        pos_hint: {'right': 1}
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldName:
+            text: "                     Defender performance:"
+
+        FieldName:
+
+    DefenderPerformance:
+        id: defender_performance
+
+    Button:
+        text: "add parameter"
+        size_hint: .715, None
+        height: "30dp"
+        on_release: defender_performance.add_parameter()
+        pos_hint: {'right': 1}
+
+    SmallBuffer:
+
+
+<DefenderFields@GridLayout>:
+    cols: 2
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: "                     Defender #"
+
+    RemoveButton:
+        text: "Remove Defender"
+
+    FieldName:
+        text: "                     Name of defender:"
+
+    FieldInput:
+        id: defender_name_input
+
+    FieldName:
+        text: "                     Type of defense:"
+
+    FieldInput:
+        id: defender_type_input
+
+    FieldName:
+        text: "                     Defense parameters:"
+
+    FieldName:
+
+
+<DefenseParameters>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<DefenderPerformance>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<SettingsWindow>:
+    name: "settings_window"
+    id: settings_window
+
+    BoxLayout:
+        id: settings_boxlayout
+        orientation: 'vertical'
+
+        SettingsMenuBarBoxLayout:
+
+        AllSettingFieldsScrollView:
+            id: all_setting_fields_scrollview
+
+
+<SettingsMenuBarBoxLayout@BoxLayout>:
+    size_hint: 1, .1
+
+    Button:
+        text: "Back"
+        size_hint: .2, 1
+        on_release:
+            app.root.current = "main_window"
+            app.root.transition.direction = "right"
+
+    Button:
+        text: "Save"
+        size_hint: .2, 1
+        on_release:
+            root.parent.parent.generate_settings_json()
+
+
+    Button:
+        text: "Load"
+        size_hint: .2, 1
+        on_release: root.parent.parent.show_load()
+
+    Button:
+        text: "Finished"
+        size_hint: .2, 1
+        on_release:
+            app.root.current = "main_window"
+            app.root.transition.direction = "left"
+
+    Label:
+        text: "Output Settings"
+        font_size: 24
+
+
+<AllSettingFieldsScrollView@ScrollView>:
+    do_scroll_x: False
+    do_scroll_y: True
+
+    AllSettingFieldsContainer:
+        id: all_setting_fields_container
+
+
+<AllSettingFieldsContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    DefaultSettingFieldsContainer:
+        id: default_setting_fields_container
+
+    SmallBuffer:
+
+    CustomScoresContainer:
+        id: custom_scores_container
+
+    SmallBuffer:
+
+    ConstraintsContainer:
+        id: constraints_container
+
+
+<DefaultSettingFieldsContainer@BoxLayout>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: " General:"
+
+    DefaultSettingFieldsGrid:
+        id: default_setting_fields_grid
+
+
+<DefaultSettingFieldsGrid>:
+    cols: 2
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: "     Input data path:"
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldInput:
+            id: input_data_path_input
+
+        Button:
+            text: "Choose Input Data File"
+            id: load_input_data_path
+            on_release: root.show_load()
+
+    FieldName:
+        text: "     Output file path:"
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: self.minimum_height
+
+        FieldInput:
+            id: output_file_path_input
+
+        Button:
+            text: "Choose Output Location"
+            id: save_output_file_location
+            on_release: root.show_save()
+
+    FieldName:
+        text: "     Solver name:"
+
+    FieldInput:
+        id: solver_name_input
+
+    FieldName:
+        text: "     Solver file path:"
+
+    FieldInput:
+        id: solver_file_path_input
+
+
+<CustomScoresContainer@BoxLayout>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: " Customized Score Formulas:"
+
+    FormulasContainer:
+        id: formulas_container
+
+    Button:
+        text: "add formula"
+        size_hint: .7, None
+        height: "30dp"
+        on_release: formulas_container.add_formula()
+        pos_hint: {'center_x': .5}
+
+
+<FormulasContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<FormulaFieldsContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FormulaFields:
+        id: formula_fields
+
+    FormulaParameters:
+        id: formula_parameters
+
+    Button:
+        text: "add parameter"
+        size_hint: .715, None
+        height: "30dp"
+        on_release: formula_parameters.add_parameter()
+        pos_hint: {'right': 1}
+
+    SmallBuffer:
+
+
+<FormulaFields>:
+    size_hint: 1, None
+    height: self.minimum_height
+    cols: 2
+
+    FieldName:
+        text: "     Formula #"
+
+    RemoveButton:
+        text: "Remove Formula"
+
+    FieldName:
+        text: "     Formula name:"
+
+    FieldInput:
+        id: formula_name_input
+
+    FieldName:
+        text: "     Formula path:"
+
+    FieldInput:
+        id: formula_path_input
+
+
+<FormulaParameters>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<ConstraintsContainer@BoxLayout>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldName:
+        text: " Constraints:"
+
+    AddCustomConstraints:
+        id: add_custom_constraints
+
+    Constraints:
+        id: constraints
+
+    SmallBuffer:
+
+    Button:
+        text: "add constraint"
+        size_hint: .7, None
+        height: "30dp"
+        on_release: constraints.add_constraint()
+        pos_hint: {'center_x': .5}
+
+
+<AddCustomConstraints>:
+    orientation: 'horizontal'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    FieldInput:
+        id: custom_constraint_input
+        size_hint: .285, None
+
+    Button:
+        text: "add custom constraint"
+        size_hint: .3, None
+        height: "30dp"
+        on_release: root.add_custom_constraint()
+
+    FieldName:
+        id: custom_constraint_text
+        size_hint: .415, None
+
+
+<Constraints>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+
+<ParameterLayout>:
+    orientation: 'horizontal'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    Button:
+        text: "X"
+        size_hint: .03, None
+        height: "30dp"
+        on_release: root.parent.remove_widget(root)
+
+    FieldName:
+        id: key_name
+        size_hint: .255, None
+
+    FieldInput:
+        id: key_input
+        size_hint: .3, None
+
+    FieldName:
+        id: value_name
+        size_hint: .115, None
+        halign: 'right'
+        text: "ParameterValue: "
+
+    FieldInput:
+        id: value_input
+        size_hint: .3, None
+
+
+<ConstraintLayout>:
+    orientation: 'horizontal'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    Button:
+        text: "X"
+        size_hint: .03, None
+        height: "30dp"
+        on_release: root.parent.remove_widget(root)
+
+    FieldName:
+        id: key_name
+        size_hint: .255, None
+        text: "     MetricName:"
+
+    FieldInput:
+        id: key_input
+        size_hint: .3, None
+        suggestions_source: "constraint_suggestions"
+
+    FieldName:
+        id: value_name
+        size_hint: .15, None
+        halign: 'right'
+        text: "Constraint: "
+
+    ConstraintSpinner:
+        id: constraint_spinner
+
+    FieldInput:
+        id: value_input
+        size_hint: .15, None
+        input_filter: "float"
+
+
+<ConstraintSpinner>:
+    size_hint: .115, None
+    height: "30dp"
+    text: 'constraint'
+    values: self.get_values()
+    on_text: self.min_max_clear(self.parent.ids.value_input)
+
+
+<RecommendationsWindow>:
+    name: "recommendations_window"
+    id: recommendations_window
+
+    BoxLayout:
+        id: recommendations_boxlayout
+        orientation: 'vertical'
+
+        RecommendationsMenuBarBoxLayout:
+
+        RecommendationsScrollView:
+            id: recommendations_scrollview
+
+
+<RecommendationsMenuBarBoxLayout@BoxLayout>:
+    size_hint: 1, .1
+
+    Button:
+        text: "Back"
+        size_hint: .2, 1
+        on_release:
+            app.root.current = "main_window"
+            app.root.transition.direction = "right"
+
+    Label:
+        text: "Recommendations"
+
+
+<RecommendationsScrollView@ScrollView>:
+    do_scroll_x: False
+    do_scroll_y: True
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, None
+        height: self.minimum_height
+        id: sub_layer_container
+
+
+<RecommendationContainer>:
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    BoxLayout:
+        id: layer_container
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: layer_container.minimum_height
+
+        Button:
+            id: expansion_button
+            text: "-"
+            size_hint: None, None
+            height: "30dp"
+            width: "30dp"
+            on_press:
+            # expands/collapses the contents
+                if sub_layer_container.opacity == 1: \
+                sub_layer_container.opacity = 0 ; \
+                sub_layer_container.height = 0 ; \
+                self.text = "+"
+                else: \
+                sub_layer_container.opacity = 1 ; \
+                sub_layer_container.height = sub_layer_container.minimum_height ; \
+                self.text = "-"
+
+        RecommendationLabel:
+            id: layer_label
+            text: "layer default"
+
+    BoxLayout:
+        id: sub_layer_container
+        orientation: 'vertical'
+        size_hint_y: None
+        height: sub_layer_container.minimum_height
+
+
+<RecommendationLabel>:
+    font_size: 15
+    text: "default"
+    size_hint: None, None
+    height: "30dp"
+    width: self.texture_size[0]
+
+
+<FieldName>:
+    font_size: 15
+    size_hint: .4, None
+    height: "30dp"
+    text_size: self.size
+    halign: 'left'
+    valign: 'center'
+
+
+<FieldInput>:
+    font_size: 12
+    size_hint: 1, None
+    height: "30dp"
+    multiline: False
+    text: ""
+    valign: "center"
+    write_tab: False
+    on_text: root.give_suggestions()
+
+
+<RemoveButton@Button>:
+    text: "Remove"
+    size_hint: 1, None
+    height: "30dp"
+    on_release: self.parent.parent.parent.remove_widget(root.parent.parent)
+
+
+<SmallBuffer@Label>:
+    size_hint: 1, None
+    height: "15dp"
+
+
+<MediumBuffer@Label>:
+    size_hint: 1, None
+    height: "30dp"
+
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            filters: ["*.json"]
+            on_submit: root.load(self.path, self.selection)
+            path: root.get_the_path()
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+
+<SaveDialog>:
+    text_input: text_input
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            filters: ["*.json"]
+            on_submit: root.save(filechooser.path, text_input.text)
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+            path: root.get_the_path()
+
+        Label:
+            id: label
+            size_hint_y: None
+            height: 30
+
+        SaveTextInput:
+            id: text_input
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filechooser.path, text_input.text)
+
+<SaveTextInput>:
+    size_hint_y: None
+    height: 30
+    multiline: False

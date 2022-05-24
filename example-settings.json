@@ -1,0 +1,36 @@
+{
+  "input_data_path": "path\\to\\file\\example-data-input.json",
+  "customized_metric_score": [
+    {
+      "name": "CS01",
+      "path": "customized_metrics.Metrics",
+      "scoreCalculatorParam": {
+        "showDetails": true,
+        "gamma": 1.0,
+        "beta": 1.0,
+        "alpha": 1.0
+      }
+    }
+  ],
+  "solver": {
+    "constraints": [
+      {
+        "constraint": "LpMaximize"
+      },
+      {
+        "constraint": "max",
+        "metric_name": "CS01"
+      },
+      {
+        "constraint": ">=",
+        "constraint_value": 86,
+        "metric_name": "natural_accuracy"
+      }
+    ],
+    "name": "PulP",
+    "path": "Solvers.ConstraintHandler"
+  },
+  "output": {
+    "output_file_path": "path\\to\\file\\example-generated-output.json"
+  }
+}
