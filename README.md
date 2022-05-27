@@ -34,4 +34,4 @@ Creating a Settings File follows a very similar process to creating a Data Input
 
 <img src="https://user-images.githubusercontent.com/76569535/167217226-3405197b-04d8-4980-a7b8-7d113522552a.png" width="75%" height="75%">
 
-More in the Wiki page!
+Check out the Wiki page for more information!
