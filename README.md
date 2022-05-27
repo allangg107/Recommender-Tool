@@ -33,3 +33,5 @@ Note: The 'tab' key can be used to navigate to the next field. Also, certain fie
 Creating a Settings File follows a very similar process to creating a Data Input File. In addition to the features included during the creating of a Data Input File, the settings page has buttons to choose the Input Data File and Output File location via a file explorer. Also, the field next to the 'add custom constraint' button can be used to add custom contraints to the list of constraints offered in the 'constraint' button dropdown.
 
 <img src="https://user-images.githubusercontent.com/76569535/167217226-3405197b-04d8-4980-a7b8-7d113522552a.png" width="75%" height="75%">
+
+More in the Wiki page!
