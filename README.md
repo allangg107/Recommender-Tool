@@ -18,7 +18,7 @@ Click 'Create Data Input File' or 'Create Settings File' to go to the respective
 
 Click 'Choose Setting File' to select the setting file you wish to use to generate the recommendations. Then Click 'Generate Recommendations' to recieve your output at the location specified in the setting file selected, as well as the terminal.
 
-<img src="https://user-images.githubusercontent.com/76569535/167215666-3dfc5b72-2254-4553-b627-54b41ef93bb0.png" width="75%" height="75%">
+<img width="960" alt="Capture" src="https://user-images.githubusercontent.com/76569535/174460946-bbb45993-1943-4001-874b-b833e2fc1fc2.PNG" width="75%" height="75%">
 
 # Creating Data Input File
 A Data Input File can be created from scratch using this page. Or, click the 'Load' button and choose a json file (with correct formatting, see example-data-input.json file) that will be used to populate the page's fields accordingly. From there the fields can continue to be modified as needed. Click 'Save' to save the file.
