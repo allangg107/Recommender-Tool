@@ -1,6 +1,8 @@
 # Recommender-Tool
 Machine Learning Defense Recommender Tool
 
+A short overview of this project: https://www.youtube.com/watch?v=lbcSJet9h4o
+
 # Installation
 See requirements.txt file for dependencies.
 
