@@ -3,7 +3,7 @@ Machine Learning Defense Recommender Tool
 
 Watch a short project overview here: https://www.youtube.com/watch?v=lbcSJet9h4o
 
-# Installating
+# Installing
 See requirements.txt file for dependencies.
 
 Install all dependencies with:
