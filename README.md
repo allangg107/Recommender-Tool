@@ -13,7 +13,7 @@ Install all dependencies with:
 # Starting
 The program is started by running the following command in the terminal:
 
-python main2.py
+`python main2.py`
 
 # Using
 Click 'Create Data Input File' or 'Create Settings File' to go to the respective page to create each type of file. See the 'Creating Data Input File' and 'Create Settings File' sections below for more details.
