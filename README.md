@@ -8,7 +8,7 @@ See requirements.txt file for dependencies.
 
 Install all dependencies with:
 
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 # Starting
 The program is started by running the following command in the terminal:
